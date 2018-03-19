@@ -12,9 +12,7 @@ interface Store {
 
     fun onError(throwable: Throwable, callback: LoaderCallback)
 
-    interface Remote {
-
-    }
+    interface Remote
 
     interface Memory {
         fun hasBeenInitialized(): Boolean

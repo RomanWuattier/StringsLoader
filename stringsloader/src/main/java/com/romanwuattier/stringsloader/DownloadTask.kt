@@ -9,8 +9,8 @@ import java.io.IOException
 import java.util.concurrent.ConcurrentHashMap
 
 internal class DownloadTask<K, V>(private val loadRequest: LoadRequest,
-                   private val onSuccess: (ConcurrentHashMap<K, V>, LoaderCallback) -> Unit,
-                   private val onError: (Throwable, LoaderCallback) -> Unit) : Runnable {
+    private val onSuccess: (ConcurrentHashMap<K, V>, LoaderCallback) -> Unit,
+    private val onError: (Throwable, LoaderCallback) -> Unit) : Runnable {
 
     override fun run() {
         val okHttpClient = StringsLoaderModule.provideInstance().getOkHttpClient()

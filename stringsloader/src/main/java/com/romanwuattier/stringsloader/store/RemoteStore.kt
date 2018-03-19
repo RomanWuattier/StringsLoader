@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-internal class RemoteStore: Store, Store.Remote {
+internal class RemoteStore : Store, Store.Remote {
 
     internal companion object Provider {
         @Volatile

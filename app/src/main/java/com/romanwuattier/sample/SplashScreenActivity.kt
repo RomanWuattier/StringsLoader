@@ -3,7 +3,7 @@ package com.romanwuattier.sample
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.romanwuattier.stringsloader.StringsLoader
-import com.romanwuattier.stringsloader.StringsLoaderCallback
+import com.romanwuattier.stringsloader.LoaderCallback
 import com.romanwuattier.stringsloader.converter.ConverterType
 
 class SplashScreenActivity : AppCompatActivity() {
@@ -13,7 +13,7 @@ class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        StringsLoader.provideTranslationLoader().load(URL, ConverterType.JSON, object : StringsLoaderCallback {
+        StringsLoader.provideTranslationLoader().load(URL, ConverterType.JSON, object : LoaderCallback {
             override fun onComplete() {
                 navigateToNextPage()
                 finish()

@@ -3,6 +3,7 @@ package com.romanwuattier.stringsloader
 import com.romanwuattier.stringsloader.converter.ConverterFactory
 import com.romanwuattier.stringsloader.converter.ConverterStrategy
 import com.romanwuattier.stringsloader.converter.ConverterType
+import com.romanwuattier.stringsloader.store.Store
 import com.romanwuattier.stringsloader.store.StorePolicy
 import okhttp3.OkHttpClient
 
@@ -23,8 +24,6 @@ internal class StringsLoaderModule {
 
     private val okHttpClient = OkHttpClient()
 
-    private val storePolicy = StorePolicy()
-
     @Synchronized
     fun getOkHttpClient(): OkHttpClient = okHttpClient
 
@@ -32,5 +31,5 @@ internal class StringsLoaderModule {
     fun getConverterStrategy(type: ConverterType): ConverterStrategy = ConverterFactory.getConverter(type)
 
     @Synchronized
-    fun getStorePolicy() = storePolicy
+    fun getStore(): Store = StorePolicy.defineStorePolicy()
 }

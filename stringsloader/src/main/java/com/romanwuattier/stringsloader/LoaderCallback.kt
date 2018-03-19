@@ -1,6 +1,6 @@
 package com.romanwuattier.stringsloader
 
-interface StringsLoaderCallback {
+interface LoaderCallback {
 
     fun onComplete()
 

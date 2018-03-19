@@ -2,6 +2,7 @@ package com.romanwuattier.stringsloader
 
 import com.romanwuattier.stringsloader.converter.ConverterType
 import com.romanwuattier.stringsloader.data.LoadRequest
+import com.romanwuattier.stringsloader.store.MemoryStore
 import com.romanwuattier.stringsloader.utils.checkMainThread
 
 class StringsLoader private constructor() : Loader {
@@ -22,19 +23,23 @@ class StringsLoader private constructor() : Loader {
     }
 
     @Synchronized
-    override fun load(url: String, converterType: ConverterType, callback: StringsLoaderCallback) {
+    override fun load(url: String, converterType: ConverterType, callback: LoaderCallback) {
         checkMainThread()
 
         val request = LoadRequest(url, converterType, callback)
-        val policy = StringsLoaderModule.provideInstance().getStorePolicy()
-        policy.fetch<Any, String>(request)
+        val store = StringsLoaderModule.provideInstance().getStore()
+        store.fetch<Any, String>(request)
     }
 
     override fun get(key: Any): String {
         checkMainThread()
 
-        val policy = StringsLoaderModule.provideInstance().getStorePolicy()
-        val value = policy.get<Any, String>(key)
+        val store = StringsLoaderModule.provideInstance().getStore()
+        val value = if (store is MemoryStore) {
+            store.get<Any, String>(key)
+        } else {
+            throw IllegalStateException("The memory store has not been initialized yet. Make sure to load data before.")
+        }
         return value ?: throw IllegalArgumentException("Translation key doesn't exist")
     }
 }

@@ -1,15 +1,19 @@
 package com.romanwuattier.stringsloader.store
 
-import com.romanwuattier.stringsloader.StringsLoaderCallback
+import com.romanwuattier.stringsloader.LoaderCallback
 import com.romanwuattier.stringsloader.data.LoadRequest
 import java.util.concurrent.ConcurrentHashMap
 
 interface Store {
 
+    fun <K, V> fetch(request: LoadRequest)
+
+    fun <K, V> onSuccess(map: ConcurrentHashMap<K, V>, callback: LoaderCallback)
+
+    fun onError(throwable: Throwable, callback: LoaderCallback)
+
     interface Remote {
-        fun <K, V> fetch(request: LoadRequest,
-                  onSuccess: (ConcurrentHashMap<K, V>, StringsLoaderCallback) -> Unit,
-                  onError: (Throwable, StringsLoaderCallback) -> Unit)
+
     }
 
     interface Memory {

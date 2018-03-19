@@ -1,15 +1,15 @@
 package com.romanwuattier.stringsloader.store
 
 import com.romanwuattier.stringsloader.DownloadTask
-import com.romanwuattier.stringsloader.StringsLoaderCallback
+import com.romanwuattier.stringsloader.LoaderCallback
 import com.romanwuattier.stringsloader.data.LoadRequest
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class RemoteStore: Store.Remote {
+internal class RemoteStore: Store, Store.Remote {
 
-    companion object Provider {
+    internal companion object Provider {
         @Volatile
         private var instance: RemoteStore? = null
 
@@ -24,10 +24,21 @@ class RemoteStore: Store.Remote {
 
     private val worker: ExecutorService = Executors.newSingleThreadExecutor()
 
-    override fun <K, V> fetch(request: LoadRequest,
-                       onSuccess: (ConcurrentHashMap<K, V>, StringsLoaderCallback) -> Unit,
-                       onError: (Throwable, StringsLoaderCallback) -> Unit) {
-        val task = DownloadTask(request, onSuccess, onError)
+    override fun <K, V> fetch(request: LoadRequest) {
+        val task = DownloadTask<K, V>(request, ::onSuccess, ::onError)
         worker.submit(task)
+    }
+
+    override fun <K, V> onSuccess(map: ConcurrentHashMap<K, V>, callback: LoaderCallback) {
+        updateMemoryStore(map)
+        callback.onComplete()
+    }
+
+    override fun onError(throwable: Throwable, callback: LoaderCallback) {
+        callback.onError()
+    }
+
+    private fun <K, V> updateMemoryStore(map: ConcurrentHashMap<K, V>) {
+        MemoryStore.provideInstance().memoryMap = map
     }
 }

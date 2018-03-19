@@ -1,10 +1,12 @@
 package com.romanwuattier.stringsloader.store
 
+import com.romanwuattier.stringsloader.LoaderCallback
+import com.romanwuattier.stringsloader.data.LoadRequest
 import java.util.concurrent.ConcurrentHashMap
 
-class MemoryStore : Store.Memory {
+internal class MemoryStore : Store, Store.Memory {
 
-    companion object Provider {
+    internal companion object Provider {
         @Volatile
         private var instance: MemoryStore? = null
 
@@ -23,5 +25,18 @@ class MemoryStore : Store.Memory {
 
     override fun isEmpty(): Boolean = memoryMap.isEmpty()
 
+    override fun <K, V> fetch(request: LoadRequest) {
+        onSuccess(memoryMap, request.callback)
+    }
+
+    @Suppress("UNCHECKED_CAST")
     override fun <K, V> get(key: K): V? = memoryMap[key] as? V?
+
+    override fun <K, V> onSuccess(map: ConcurrentHashMap<K, V>, callback: LoaderCallback) {
+        callback.onComplete()
+    }
+
+    override fun onError(throwable: Throwable, callback: LoaderCallback) {
+        callback.onError()
+    }
 }

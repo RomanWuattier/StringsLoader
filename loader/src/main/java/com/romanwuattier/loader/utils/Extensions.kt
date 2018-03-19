@@ -1,4 +1,4 @@
-package com.romanwuattier.stringsloader.utils
+package com.romanwuattier.loader.utils
 
 import android.os.Looper
 

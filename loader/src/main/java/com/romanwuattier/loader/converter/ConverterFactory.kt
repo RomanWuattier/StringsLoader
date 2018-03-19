@@ -1,4 +1,4 @@
-package com.romanwuattier.stringsloader.converter
+package com.romanwuattier.loader.converter
 
 internal class ConverterFactory {
 

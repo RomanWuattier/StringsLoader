@@ -1,11 +1,10 @@
 package com.romanwuattier.stringsloader
 
-import com.romanwuattier.stringsloader.converter.ConverterType
-import com.romanwuattier.stringsloader.data.LoadRequest
-import com.romanwuattier.stringsloader.store.MemoryStore
-import com.romanwuattier.stringsloader.utils.checkMainThread
+import com.romanwuattier.loader.LoaderCallback
+import com.romanwuattier.loader.converter.ConverterType
+import com.romanwuattier.loader.utils.checkMainThread
 
-class StringsLoader private constructor() : Loader {
+class StringsLoader private constructor() {
 
     companion object Provider {
         @Volatile
@@ -22,24 +21,20 @@ class StringsLoader private constructor() : Loader {
         }
     }
 
+    private val module = StringsLoaderModule.provideInstance()
+
     @Synchronized
-    override fun load(url: String, converterType: ConverterType, callback: LoaderCallback) {
+    fun load(url: String, converterType: ConverterType, callback: LoaderCallback) {
         checkMainThread()
 
-        val request = LoadRequest(url, converterType, callback)
-        val store = StringsLoaderModule.provideInstance().getStore()
-        store.fetch<Any, String>(request)
+        val loader = module.getAnyLoader()
+        loader.load<Any, String>(url, converterType, callback)
     }
 
-    override fun get(key: Any): String {
+    fun get(key: Any): String {
         checkMainThread()
 
-        val store = StringsLoaderModule.provideInstance().getStore()
-        val value = if (store is MemoryStore) {
-            store.get<Any, String>(key)
-        } else {
-            throw IllegalStateException("The memory store has not been initialized yet. Make sure to load data before.")
-        }
-        return value ?: throw IllegalArgumentException("Translation key doesn't exist")
+        val loader = module.getAnyLoader()
+        return loader.get<Any, String>(key)
     }
 }

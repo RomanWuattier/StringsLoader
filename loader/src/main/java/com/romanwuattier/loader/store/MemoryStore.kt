@@ -1,7 +1,7 @@
-package com.romanwuattier.stringsloader.store
+package com.romanwuattier.loader.store
 
-import com.romanwuattier.stringsloader.LoaderCallback
-import com.romanwuattier.stringsloader.data.LoadRequest
+import com.romanwuattier.loader.LoaderCallback
+import com.romanwuattier.loader.data.LoadRequest
 import java.util.concurrent.ConcurrentHashMap
 
 internal class MemoryStore : Store, Store.Memory {

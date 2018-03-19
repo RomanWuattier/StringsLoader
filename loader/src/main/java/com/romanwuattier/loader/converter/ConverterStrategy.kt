@@ -1,4 +1,4 @@
-package com.romanwuattier.stringsloader.converter
+package com.romanwuattier.loader.converter
 
 import com.google.gson.JsonIOException
 import com.google.gson.JsonSyntaxException

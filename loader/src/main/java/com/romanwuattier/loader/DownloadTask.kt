@@ -1,20 +1,21 @@
-package com.romanwuattier.stringsloader
+package com.romanwuattier.loader
 
 import com.google.gson.JsonIOException
 import com.google.gson.JsonSyntaxException
-import com.romanwuattier.stringsloader.data.LoadRequest
+import com.romanwuattier.loader.converter.ConverterStrategy
+import com.romanwuattier.loader.data.LoadRequest
+import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import java.io.IOException
 import java.util.concurrent.ConcurrentHashMap
 
 internal class DownloadTask<K, V>(private val loadRequest: LoadRequest,
+    private val okHttpClient: OkHttpClient, private val converter: ConverterStrategy,
     private val onSuccess: (ConcurrentHashMap<K, V>, LoaderCallback) -> Unit,
     private val onError: (Throwable, LoaderCallback) -> Unit) : Runnable {
 
     override fun run() {
-        val okHttpClient = StringsLoaderModule.provideInstance().getOkHttpClient()
-        val converter = StringsLoaderModule.provideInstance().getConverterStrategy(loadRequest.converterType)
         var response: Response? = null
 
         try {

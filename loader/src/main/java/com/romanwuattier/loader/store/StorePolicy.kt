@@ -1,4 +1,4 @@
-package com.romanwuattier.stringsloader.store
+package com.romanwuattier.loader.store
 
 internal class StorePolicy {
 

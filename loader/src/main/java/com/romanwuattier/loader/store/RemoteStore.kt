@@ -1,8 +1,9 @@
-package com.romanwuattier.stringsloader.store
+package com.romanwuattier.loader.store
 
-import com.romanwuattier.stringsloader.DownloadTask
-import com.romanwuattier.stringsloader.LoaderCallback
-import com.romanwuattier.stringsloader.data.LoadRequest
+import com.romanwuattier.loader.DownloadTask
+import com.romanwuattier.loader.LoaderCallback
+import com.romanwuattier.loader.LoaderModule
+import com.romanwuattier.loader.data.LoadRequest
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -24,8 +25,12 @@ internal class RemoteStore : Store, Store.Remote {
 
     private val worker: ExecutorService = Executors.newSingleThreadExecutor()
 
+    private val module = LoaderModule.provideInstance()
+
     override fun <K, V> fetch(request: LoadRequest) {
-        val task = DownloadTask<K, V>(request, ::onSuccess, ::onError)
+        val okHttpClient = module.getOkHttpClient()
+        val converter = module.getConverterStrategy(request.converterType)
+        val task = DownloadTask<K, V>(request, okHttpClient, converter, ::onSuccess, ::onError)
         worker.submit(task)
     }
 

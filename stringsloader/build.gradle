@@ -37,6 +37,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.2'
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    compile project(path: ':loader')
 }
 repositories {
     mavenCentral()

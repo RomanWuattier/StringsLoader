@@ -5,6 +5,7 @@ import com.romanwuattier.loader.LoaderCallback
 import com.romanwuattier.loader.LoaderModule
 import com.romanwuattier.loader.data.LoadRequest
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ExecutionException
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -30,8 +31,14 @@ internal class RemoteStore : Store.Remote {
     override fun <K, V> fetch(request: LoadRequest) {
         val okHttpClient = module.getOkHttpClient()
         val converter = module.getConverterStrategy(request.converterType)
-        val task = DownloadTask<K, V>(request, okHttpClient, converter, ::onSuccess, ::onError)
-        worker.submit(task)
+        val task = DownloadTask<K, V>(request, okHttpClient, converter)
+        val future = worker.submit(task)
+
+        try {
+            onSuccess(future.get(), request.callback)
+        } catch (e: ExecutionException) {
+            onError(e, request.callback)
+        }
     }
 
     override fun <K, V> onSuccess(map: ConcurrentHashMap<K, V>, callback: LoaderCallback) {

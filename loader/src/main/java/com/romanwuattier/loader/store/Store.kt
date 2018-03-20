@@ -12,13 +12,15 @@ internal interface Store {
 
     fun onError(throwable: Throwable, callback: LoaderCallback)
 
-    interface Remote
+    interface Remote : Store
 
-    interface Memory {
+    interface Memory : Store {
         fun hasBeenInitialized(): Boolean
 
         fun isEmpty(): Boolean
 
         fun <K, V> get(key: K): V?
+
+        fun <K, V> putAll(map: ConcurrentHashMap<K, V>)
     }
 }

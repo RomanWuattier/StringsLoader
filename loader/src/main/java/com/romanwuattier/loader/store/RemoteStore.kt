@@ -8,18 +8,18 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-internal class RemoteStore : Store, Store.Remote {
+internal class RemoteStore : Store.Remote {
 
     internal companion object Provider {
         @Volatile
-        private var instance: RemoteStore? = null
+        private var instance: Store.Remote? = null
 
         @Synchronized
-        fun provideInstance(): RemoteStore {
+        fun provideInstance(): Store.Remote {
             if (instance == null) {
                 instance = RemoteStore()
             }
-            return instance as RemoteStore
+            return instance as Store.Remote
         }
     }
 
@@ -43,7 +43,8 @@ internal class RemoteStore : Store, Store.Remote {
         callback.onError()
     }
 
-    private fun <K, V> updateMemoryStore(map: ConcurrentHashMap<K, V>) {
-        MemoryStore.provideInstance().memoryMap = map
+     private fun <K, V> updateMemoryStore(map: ConcurrentHashMap<K, V>) {
+        val memoryStore = MemoryStore.provideInstance()
+         memoryStore.putAll(map)
     }
 }

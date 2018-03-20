@@ -4,22 +4,23 @@ import com.romanwuattier.loader.LoaderCallback
 import com.romanwuattier.loader.data.LoadRequest
 import java.util.concurrent.ConcurrentHashMap
 
-internal class MemoryStore : Store, Store.Memory {
+internal class MemoryStore : Store.Memory {
 
     internal companion object Provider {
         @Volatile
-        private var instance: MemoryStore? = null
+        private var instance: Store.Memory? = null
 
         @Synchronized
-        fun provideInstance(): MemoryStore {
+        fun provideInstance(): Store.Memory {
             if (instance == null) {
                 instance = MemoryStore()
             }
-            return instance as MemoryStore
+            return instance as Store.Memory
         }
     }
 
-    internal lateinit var memoryMap: ConcurrentHashMap<*, *>
+    // TODO: Find a way to initialize <K, V> ConcurrentHashMap
+    private lateinit var memoryMap: ConcurrentHashMap<*, *>
 
     override fun hasBeenInitialized(): Boolean = ::memoryMap.isInitialized
 
@@ -31,6 +32,10 @@ internal class MemoryStore : Store, Store.Memory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <K, V> get(key: K): V? = memoryMap[key] as? V?
+
+    override fun <K, V> putAll(map: ConcurrentHashMap<K, V>) {
+        memoryMap = map
+    }
 
     override fun <K, V> onSuccess(map: ConcurrentHashMap<K, V>, callback: LoaderCallback) {
         callback.onComplete()

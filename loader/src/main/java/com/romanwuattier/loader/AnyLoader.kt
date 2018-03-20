@@ -26,14 +26,14 @@ class AnyLoader : Loader {
         checkMainThread()
 
         val request = LoadRequest(url, converterType, callback)
-        val store = module.getStore()
+        val store = module.getStorePolicy()
         store.fetch<K, V>(request)
     }
 
     override fun <K, V> get(key: K): V {
         checkMainThread()
 
-        val store = module.getStore()
+        val store = module.getStorePolicy()
         val value = if (store is MemoryStore) {
             store.get<K, V>(key)
         } else {

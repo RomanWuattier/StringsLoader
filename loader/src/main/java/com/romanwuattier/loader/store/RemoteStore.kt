@@ -44,7 +44,7 @@ internal class RemoteStore : Store.Remote {
     }
 
      private fun <K, V> updateMemoryStore(map: ConcurrentHashMap<K, V>) {
-        val memoryStore = MemoryStore.provideInstance()
+        val memoryStore = StoreModule.provideInstance().getMemoryStore()
          memoryStore.putAll(map)
     }
 }

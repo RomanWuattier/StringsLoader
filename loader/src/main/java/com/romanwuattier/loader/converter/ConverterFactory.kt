@@ -8,8 +8,8 @@ internal class ConverterFactory {
             else -> createOtherConverter()
         }
 
-        private fun createJsonConverter() = JsonConverter()
+        private fun createJsonConverter() = ConverterModule.provideInstance().getJsonConverter()
 
-        private fun createOtherConverter() = OtherConverter()
+        private fun createOtherConverter() = ConverterModule.provideInstance().getOtherConverter()
     }
 }

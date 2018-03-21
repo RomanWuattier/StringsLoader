@@ -3,27 +3,14 @@ package com.romanwuattier.loader.store
 import com.romanwuattier.loader.DownloadTask
 import com.romanwuattier.loader.LoaderCallback
 import com.romanwuattier.loader.LoaderModule
+import com.romanwuattier.loader.SaveTask
 import com.romanwuattier.loader.data.LoadRequest
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-internal class RemoteStore<K, V> private constructor() : Store.Remote<K, V> {
-
-    internal companion object Provider: Store.GenericProvider {
-        @Volatile
-        private var instance: Store.Remote<*, *>? = null
-
-        @Suppress("UNCHECKED_CAST")
-        @Synchronized
-        override fun <K, V> provideInstance(): Store.Remote<K, V> {
-            if (instance == null) {
-                instance = RemoteStore<K, V>()
-            }
-            return instance as Store.Remote<K, V>
-        }
-    }
+internal class RemoteStore<K, V> : Store.Remote<K, V> {
 
     private val worker: ExecutorService = Executors.newSingleThreadExecutor()
 
@@ -43,16 +30,24 @@ internal class RemoteStore<K, V> private constructor() : Store.Remote<K, V> {
     }
 
     override fun onSuccess(map: ConcurrentHashMap<K, V>, callback: LoaderCallback) {
-        updateMemoryStore(map)
-        callback.onComplete()
+        updateMemoryStore(map, callback)
     }
 
     override fun onError(throwable: Throwable, callback: LoaderCallback) {
         callback.onError()
     }
 
-     private fun updateMemoryStore(map: ConcurrentHashMap<K, V>) {
-        val memoryStore = StoreModule.provideInstance().getMemoryStore<K, V>()
-         memoryStore.putAll(map)
+    private fun updateMemoryStore(map: ConcurrentHashMap<K, V>, callback: LoaderCallback) {
+        val memoryStore = StoreModule.provideInstance<K, V>().getMemoryStore()
+        val task = SaveTask(map, memoryStore)
+        val future = worker.submit(task)
+
+        try {
+            if (future.get()) {
+                callback.onComplete()
+            }
+        } catch (e: ExecutionException) {
+            callback.onError()
+        }
     }
 }

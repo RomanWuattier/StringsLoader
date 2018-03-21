@@ -27,12 +27,16 @@ internal class LoaderModule private constructor() {
 
     private val okHttpClient = OkHttpClient()
 
+    private val converterFactory = ConverterFactory()
+
+    private val storePolicy = StorePolicy()
+
     @Synchronized
     internal fun getOkHttpClient(): OkHttpClient = okHttpClient
 
     @Synchronized
-    internal fun getConverterStrategy(type: ConverterType): ConverterStrategy = ConverterFactory.getConverter(type)
+    internal fun getConverterStrategy(type: ConverterType): ConverterStrategy = converterFactory.getConverter(type)
 
     @Synchronized
-    internal fun <K, V> getStorePolicy(): Store<K, V> = StorePolicy.defineStorePolicy()
+    internal fun <K, V> getStorePolicy(): Store<K, V> = storePolicy.defineStorePolicy()
 }

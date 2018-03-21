@@ -23,8 +23,4 @@ internal interface Store<K, V> {
 
         fun putAll(map: ConcurrentHashMap<K, V>)
     }
-
-    interface GenericProvider {
-        fun <K, V> provideInstance(): Store<K, V>
-    }
 }

@@ -4,23 +4,27 @@ import com.romanwuattier.loader.LoaderCallback
 import com.romanwuattier.loader.data.LoadRequest
 import java.util.concurrent.ConcurrentHashMap
 
-internal interface Store {
+internal interface Store<K, V> {
 
-    fun <K, V> fetch(request: LoadRequest)
+    fun fetch(request: LoadRequest)
 
-    fun <K, V> onSuccess(map: ConcurrentHashMap<K, V>, callback: LoaderCallback)
+    fun onSuccess(map: ConcurrentHashMap<K, V>, callback: LoaderCallback)
 
     fun onError(throwable: Throwable, callback: LoaderCallback)
 
-    interface Remote : Store
+    interface Remote<K, V> : Store<K, V>
 
-    interface Memory : Store {
+    interface Memory<K, V> : Store<K, V> {
         fun hasBeenInitialized(): Boolean
 
         fun isEmpty(): Boolean
 
-        fun <K, V> get(key: K): V?
+        fun get(key: K): V?
 
-        fun <K, V> putAll(map: ConcurrentHashMap<K, V>)
+        fun putAll(map: ConcurrentHashMap<K, V>)
+    }
+
+    interface GenericProvider {
+        fun <K, V> provideInstance(): Store<K, V>
     }
 }

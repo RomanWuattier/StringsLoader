@@ -34,5 +34,5 @@ internal class LoaderModule private constructor() {
     internal fun getConverterStrategy(type: ConverterType): ConverterStrategy = ConverterFactory.getConverter(type)
 
     @Synchronized
-    internal fun getStorePolicy(): Store = StorePolicy.defineStorePolicy()
+    internal fun <K, V> getStorePolicy(): Store<K, V> = StorePolicy.defineStorePolicy()
 }

@@ -9,18 +9,19 @@ import java.util.concurrent.ExecutionException
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-internal class RemoteStore : Store.Remote {
+internal class RemoteStore<K, V> private constructor() : Store.Remote<K, V> {
 
-    internal companion object Provider {
+    internal companion object Provider: Store.GenericProvider {
         @Volatile
-        private var instance: Store.Remote? = null
+        private var instance: Store.Remote<*, *>? = null
 
+        @Suppress("UNCHECKED_CAST")
         @Synchronized
-        fun provideInstance(): Store.Remote {
+        override fun <K, V> provideInstance(): Store.Remote<K, V> {
             if (instance == null) {
-                instance = RemoteStore()
+                instance = RemoteStore<K, V>()
             }
-            return instance as Store.Remote
+            return instance as Store.Remote<K, V>
         }
     }
 
@@ -28,7 +29,7 @@ internal class RemoteStore : Store.Remote {
 
     private val module = LoaderModule.provideInstance()
 
-    override fun <K, V> fetch(request: LoadRequest) {
+    override fun fetch(request: LoadRequest) {
         val okHttpClient = module.getOkHttpClient()
         val converter = module.getConverterStrategy(request.converterType)
         val task = DownloadTask<K, V>(request, okHttpClient, converter)
@@ -41,7 +42,7 @@ internal class RemoteStore : Store.Remote {
         }
     }
 
-    override fun <K, V> onSuccess(map: ConcurrentHashMap<K, V>, callback: LoaderCallback) {
+    override fun onSuccess(map: ConcurrentHashMap<K, V>, callback: LoaderCallback) {
         updateMemoryStore(map)
         callback.onComplete()
     }
@@ -50,8 +51,8 @@ internal class RemoteStore : Store.Remote {
         callback.onError()
     }
 
-     private fun <K, V> updateMemoryStore(map: ConcurrentHashMap<K, V>) {
-        val memoryStore = StoreModule.provideInstance().getMemoryStore()
+     private fun updateMemoryStore(map: ConcurrentHashMap<K, V>) {
+        val memoryStore = StoreModule.provideInstance().getMemoryStore<K, V>()
          memoryStore.putAll(map)
     }
 }

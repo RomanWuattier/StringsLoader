@@ -20,8 +20,8 @@ internal class StoreModule private constructor() {
     }
 
     @Synchronized
-    internal fun getMemoryStore() = MemoryStore.provideInstance()
+    internal fun <K, V> getMemoryStore(): Store.Memory<K, V> = MemoryStore.provideInstance()
 
     @Synchronized
-    internal fun getRemoteStore() = RemoteStore.provideInstance()
+    internal fun <K, V> getRemoteStore(): Store.Remote<K, V> = RemoteStore.provideInstance()
 }

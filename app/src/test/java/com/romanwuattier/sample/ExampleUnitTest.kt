@@ -1,4 +1,4 @@
-package com.romanwuattier.stringsloader
+package com.romanwuattier.sample
 
 import org.junit.Test
 

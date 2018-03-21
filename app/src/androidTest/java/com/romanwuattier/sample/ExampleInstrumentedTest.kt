@@ -1,4 +1,4 @@
-package com.romanwuattier.stringsloader
+package com.romanwuattier.sample
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

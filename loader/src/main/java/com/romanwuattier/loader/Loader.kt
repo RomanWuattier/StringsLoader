@@ -7,5 +7,8 @@ interface Loader {
 
     fun <K, V> load(url: String, converterType: ConverterType, callback: LoaderCallback)
 
-    fun <K, V> get(key: K): V
+    @Throws(IllegalStateException::class)
+    fun <K, V> reload(callback: LoaderCallback)
+
+    fun <K, V> get(key: K): V?
 }

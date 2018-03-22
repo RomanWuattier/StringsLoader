@@ -21,6 +21,8 @@ class StringsLoader private constructor() {
         }
     }
 
+    private val EMPTY = ""
+
     private val module = StringsLoaderModule.provideInstance()
 
     @Synchronized
@@ -31,10 +33,18 @@ class StringsLoader private constructor() {
         loader.load<Any, String>(url, converterType, callback)
     }
 
+    @Synchronized
+    fun reload(callback: LoaderCallback) {
+        checkMainThread()
+
+        val loader = module.getAnyLoader()
+        loader.reload<Any, String>(callback)
+    }
+
     fun get(key: Any): String {
         checkMainThread()
 
         val loader = module.getAnyLoader()
-        return loader.get<Any, String>(key)
+        return loader.get<Any, String>(key) ?: EMPTY
     }
 }

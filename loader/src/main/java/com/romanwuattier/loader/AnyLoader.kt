@@ -3,9 +3,10 @@ package com.romanwuattier.loader
 import com.romanwuattier.loader.converter.ConverterType
 import com.romanwuattier.loader.data.LoadRequest
 import com.romanwuattier.loader.store.MemoryStore
+import com.romanwuattier.loader.store.Store
 import com.romanwuattier.loader.utils.checkMainThread
 
-class AnyLoader : Loader {
+class AnyLoader private constructor() : Loader {
 
     companion object Provider {
         @Volatile
@@ -22,23 +23,39 @@ class AnyLoader : Loader {
 
     private val module = LoaderModule.provideInstance()
 
+    private lateinit var request: LoadRequest
+
     override fun <K, V> load(url: String, converterType: ConverterType, callback: LoaderCallback) {
         checkMainThread()
 
-        val request = LoadRequest(url, converterType, callback)
+        request = LoadRequest(url, converterType, callback)
+        val store = module.getRemoteStore<K, V>()
+        load(request, store)
+    }
+
+    override fun <K, V> reload(callback: LoaderCallback) {
+        checkMainThread()
+
+        if (!::request.isInitialized) {
+            throw IllegalStateException()
+        }
+
         val store = module.getStorePolicy<K, V>()
+        load(request, store)
+    }
+
+    private fun <K, V> load(request: LoadRequest, store: Store<K, V>) {
         store.fetch(request)
     }
 
-    override fun <K, V> get(key: K): V {
+    override fun <K, V> get(key: K): V? {
         checkMainThread()
 
         val store = module.getStorePolicy<K, V>()
-        val value = if (store is MemoryStore<K, V>) {
+        return if (store is MemoryStore<K, V>) {
             store.get(key)
         } else {
-            throw IllegalStateException("The memory store has not been initialized yet. Make sure to load data before.")
+            null
         }
-        return value ?: throw IllegalArgumentException("Translation key doesn't exist")
     }
 }

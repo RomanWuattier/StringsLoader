@@ -7,5 +7,5 @@ interface LoaderCallback {
 
     fun onComplete()
 
-    fun onError()
+    fun onError(throwable: Throwable)
 }

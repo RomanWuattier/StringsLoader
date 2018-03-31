@@ -34,7 +34,7 @@ internal class RemoteStore<K, V> : Store.Remote<K, V> {
     }
 
     override fun onError(throwable: Throwable, callback: LoaderCallback) {
-        callback.onError()
+        callback.onError(throwable)
     }
 
     private fun updateMemoryStore(map: ConcurrentHashMap<K, V>, callback: LoaderCallback) {
@@ -47,7 +47,7 @@ internal class RemoteStore<K, V> : Store.Remote<K, V> {
                 callback.onComplete()
             }
         } catch (e: ExecutionException) {
-            callback.onError()
+            callback.onError(e)
         }
     }
 }

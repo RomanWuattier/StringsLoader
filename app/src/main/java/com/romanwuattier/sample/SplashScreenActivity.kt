@@ -19,8 +19,8 @@ class SplashScreenActivity : AppCompatActivity() {
                 finish()
             }
 
-            override fun onError() {
-                // Do something
+            override fun onError(throwable: Throwable) {
+                // An exception occurred
             }
         })
     }

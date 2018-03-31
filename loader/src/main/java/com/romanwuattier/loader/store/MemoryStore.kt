@@ -42,6 +42,6 @@ internal class MemoryStore<K, V> : Store.Memory<K, V> {
     }
 
     override fun onError(throwable: Throwable, callback: LoaderCallback) {
-        callback.onError()
+        callback.onError(throwable)
     }
 }

@@ -15,7 +15,7 @@ stringsLoader.load(URL, ConverterType.JSON, object : LoaderCallback {
         // The download has successfully completed
     }
 
-    override fun onError() {
+    override fun onError(throwable: Throwable) {
         // An exception occurred
     }
 })

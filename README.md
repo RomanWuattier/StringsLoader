@@ -35,3 +35,7 @@ both `clear` function and `reload` method are provided.
 * Implement a retry strategy
 * Manage response caching with OkHttp
 * Provide disk storage
+
+## Note
+The `loader` module is generic. By creating another type of loader you can load any kind of data. See the
+`stringsloader` module.

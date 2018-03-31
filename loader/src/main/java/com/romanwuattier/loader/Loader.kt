@@ -11,4 +11,6 @@ interface Loader {
     fun <K, V> reload(callback: LoaderCallback)
 
     fun <K, V> get(key: K): V?
+
+    fun <K, V> clear(): Boolean
 }

@@ -11,7 +11,7 @@ class StringsLoader private constructor() {
         private var instance: StringsLoader? = null
 
         @Synchronized
-        fun provideTranslationLoader(): StringsLoader {
+        fun provideInstance(): StringsLoader {
             checkMainThread()
 
             if (instance == null) {
@@ -46,5 +46,13 @@ class StringsLoader private constructor() {
 
         val loader = module.getAnyLoader()
         return loader.get<Any, String>(key) ?: EMPTY
+    }
+
+    @Synchronized
+    fun clear(): Boolean {
+        checkMainThread()
+
+        val loader = module.getAnyLoader()
+        return loader.clear<Any, String>()
     }
 }

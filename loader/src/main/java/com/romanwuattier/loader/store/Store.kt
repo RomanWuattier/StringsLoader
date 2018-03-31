@@ -22,5 +22,7 @@ internal interface Store<K, V> {
         fun get(key: K): V?
 
         fun putAll(map: ConcurrentHashMap<K, V>)
+
+        fun clear(): Boolean
     }
 }

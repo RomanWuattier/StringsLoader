@@ -26,6 +26,13 @@ internal class MemoryStore<K, V> : Store.Memory<K, V> {
         }
     }
 
+    override fun clear(): Boolean = if (hasBeenInitialized()) {
+        memoryMap.clear()
+        isEmpty()
+    } else {
+        false
+    }
+
     override fun onSuccess(map: ConcurrentHashMap<K, V>, callback: LoaderCallback) {
         callback.onComplete()
     }

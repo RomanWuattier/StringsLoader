@@ -58,4 +58,11 @@ class AnyLoader private constructor() : Loader {
             null
         }
     }
+
+    override fun <K, V> clear(): Boolean {
+        checkMainThread()
+
+        val store = module.getMemoryStore<K, V>()
+        return store.clear()
+    }
 }

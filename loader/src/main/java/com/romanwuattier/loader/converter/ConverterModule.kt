@@ -2,6 +2,9 @@ package com.romanwuattier.loader.converter
 
 import com.romanwuattier.loader.utils.checkMainThread
 
+/**
+ * A Singleton class that provides all the dependencies liked to the converter
+ */
 internal class ConverterModule private constructor() {
 
     internal companion object Provider {

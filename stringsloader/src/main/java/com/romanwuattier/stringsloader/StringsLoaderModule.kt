@@ -3,6 +3,9 @@ package com.romanwuattier.stringsloader
 import com.romanwuattier.loader.AnyLoader
 import com.romanwuattier.loader.Loader
 
+/**
+ * A Singleton class that provides all the dependencies to the classes of the [StringsLoader] library
+ */
 internal class StringsLoaderModule {
 
     companion object Provider {

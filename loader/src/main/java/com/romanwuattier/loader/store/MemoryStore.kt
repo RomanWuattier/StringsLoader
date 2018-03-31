@@ -13,7 +13,11 @@ internal class MemoryStore<K, V> : Store.Memory<K, V> {
     override fun isEmpty(): Boolean = memoryMap.isEmpty()
 
     override fun fetch(request: LoadRequest) {
-        onSuccess(memoryMap, request.callback)
+        if (hasBeenInitialized()) {
+            onSuccess(memoryMap, request.callback)
+        } else {
+            onError(IllegalStateException("Map shouldn't be empty"), request.callback)
+        }
     }
 
     override fun get(key: K): V? = memoryMap[key]

@@ -9,6 +9,9 @@ import com.romanwuattier.loader.store.StorePolicy
 import com.romanwuattier.loader.utils.checkMainThread
 import okhttp3.OkHttpClient
 
+/**
+ * A Singleton class that provides all the dependencies to the classes of the [Loader] library
+ */
 internal class LoaderModule private constructor() {
 
     companion object Provider {

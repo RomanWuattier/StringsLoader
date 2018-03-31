@@ -29,7 +29,7 @@ class AnyLoader private constructor() : Loader {
         checkMainThread()
 
         request = LoadRequest(url, converterType, callback)
-        val store = module.getRemoteStore<K, V>()
+        val store = module.getStorePolicy<K, V>()
         load(request, store)
     }
 
@@ -40,7 +40,7 @@ class AnyLoader private constructor() : Loader {
             throw IllegalStateException()
         }
 
-        val store = module.getStorePolicy<K, V>()
+        val store = module.getRemoteStore<K, V>()
         load(request, store)
     }
 

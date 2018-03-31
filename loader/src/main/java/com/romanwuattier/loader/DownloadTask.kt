@@ -8,6 +8,9 @@ import okhttp3.Response
 import java.util.concurrent.Callable
 import java.util.concurrent.ConcurrentHashMap
 
+/**
+ * The [Callable] task to download data from [loadRequest]
+ */
 internal class DownloadTask<K, V>(private val loadRequest: LoadRequest, private val okHttpClient: OkHttpClient,
     private val converter: ConverterStrategy) : Callable<ConcurrentHashMap<K, V>> {
 

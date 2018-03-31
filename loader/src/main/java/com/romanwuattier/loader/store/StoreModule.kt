@@ -2,6 +2,9 @@ package com.romanwuattier.loader.store
 
 import com.romanwuattier.loader.utils.checkMainThread
 
+/**
+ * A Singleton generic class that provides all the dependencies liked to the [Store]
+ */
 internal class StoreModule<K, V> private constructor() {
 
     internal companion object Provider : GenericProvider {

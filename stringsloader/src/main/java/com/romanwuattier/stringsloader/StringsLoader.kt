@@ -4,6 +4,9 @@ import com.romanwuattier.loader.LoaderCallback
 import com.romanwuattier.loader.converter.ConverterType
 import com.romanwuattier.loader.utils.checkMainThread
 
+/**
+ * A Singleton class that provides all the library methods to retrieve [String] from [Any] key
+ */
 class StringsLoader private constructor() {
 
     companion object Provider {

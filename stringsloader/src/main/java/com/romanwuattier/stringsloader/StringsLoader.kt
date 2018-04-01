@@ -3,6 +3,7 @@ package com.romanwuattier.stringsloader
 import com.romanwuattier.loader.LoaderCallback
 import com.romanwuattier.loader.converter.ConverterType
 import com.romanwuattier.loader.utils.checkMainThread
+import java.io.File
 
 /**
  * A Singleton class that provides all the library methods to retrieve [String] from [Any] key
@@ -29,11 +30,11 @@ class StringsLoader private constructor() {
     private val module = StringsLoaderModule.provideInstance()
 
     @Synchronized
-    fun load(url: String, converterType: ConverterType, callback: LoaderCallback) {
+    fun load(url: String, cacheDir: File, converterType: ConverterType, callback: LoaderCallback) {
         checkMainThread()
 
         val loader = module.getAnyLoader()
-        loader.load<Any, String>(url, converterType, callback)
+        loader.load<Any, String>(url, cacheDir, converterType, callback)
     }
 
     @Synchronized

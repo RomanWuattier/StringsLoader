@@ -9,11 +9,12 @@ import com.romanwuattier.stringsloader.StringsLoader
 class SplashScreenActivity : AppCompatActivity() {
 
     private val URL = "https://api.myjson.com/bins/nqkqb"
+    private val CACHE_DIR by lazy { applicationContext.cacheDir }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        StringsLoader.provideInstance().load(URL, ConverterType.JSON, object : LoaderCallback {
+        StringsLoader.provideInstance().load(URL, CACHE_DIR, ConverterType.JSON, object : LoaderCallback {
             override fun onComplete() {
                 navigateToNextPage()
                 finish()

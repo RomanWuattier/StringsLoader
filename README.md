@@ -10,7 +10,7 @@ you'll have to implement `LoaderCallback` interface.
 An example is worth a thousand words, so
 ```kotlin
 val stringsLoader = StringsLoader.provideInstance()
-stringsLoader.load(URL, ConverterType.JSON, object : LoaderCallback {
+stringsLoader.load(URL, CACHE_DIRECTORY, ConverterType.JSON, object : LoaderCallback {
     override fun onComplete() {
         // The download has successfully completed
     }
@@ -31,10 +31,9 @@ both `clear` function and `reload` method are provided.
 
 ## Improvements
 * Centralize error management
-* Return API error throught the callback
 * Implement a retry strategy
-* Manage response caching with OkHttp
 * Provide disk storage
+* Allows a custom configuration to manage caching with OkHttp
 
 ## Note
 The `loader` module is generic. By creating another type of loader you can load any kind of data. See the

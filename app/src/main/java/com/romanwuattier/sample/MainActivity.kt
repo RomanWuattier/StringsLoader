@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.TextView
+import com.romanwuattier.loader.LoaderCallback
 import com.romanwuattier.stringsloader.StringsLoader
 
 class MainActivity : AppCompatActivity() {
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private val tvKey3 by lazy { findViewById<TextView>(R.id.key3) }
     private val getKeys by lazy { findViewById<Button>(R.id.getKeys) }
     private val clearKeys by lazy { findViewById<Button>(R.id.clearKeys) }
+    private val reloadKeys by lazy { findViewById<Button>(R.id.reloadKeys) }
 
     private val stringsLoader = StringsLoader.provideInstance()
 
@@ -31,6 +33,7 @@ class MainActivity : AppCompatActivity() {
 
         getKeys.setOnClickListener({ setKeys() })
         clearKeys.setOnClickListener({ clearKeys() })
+        reloadKeys.setOnClickListener({ reloadKeys() })
     }
 
     private fun setKeys() {
@@ -48,5 +51,17 @@ class MainActivity : AppCompatActivity() {
         tvKey1.text = ""
         tvKey2.text = ""
         tvKey3.text = ""
+    }
+
+    private fun reloadKeys() {
+        stringsLoader.reload(object : LoaderCallback {
+            override fun onComplete() {
+                setKeys()
+            }
+
+            override fun onError(throwable: Throwable) {
+                // An exception occurred
+            }
+        })
     }
 }

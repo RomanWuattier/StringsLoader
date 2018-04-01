@@ -5,6 +5,7 @@ import com.romanwuattier.loader.data.LoadRequest
 import com.romanwuattier.loader.store.MemoryStore
 import com.romanwuattier.loader.store.Store
 import com.romanwuattier.loader.utils.checkMainThread
+import java.io.File
 
 class AnyLoader private constructor() : Loader {
 
@@ -25,10 +26,11 @@ class AnyLoader private constructor() : Loader {
 
     private lateinit var request: LoadRequest
 
-    override fun <K, V> load(url: String, converterType: ConverterType, callback: LoaderCallback) {
+    override fun <K, V> load(url: String, cacheDir: File, converterType: ConverterType,
+        callback: LoaderCallback) {
         checkMainThread()
 
-        request = LoadRequest(url, converterType, callback)
+        request = LoadRequest(url, cacheDir, converterType, callback)
         val store = module.getStorePolicy<K, V>()
         load(request, store)
     }

@@ -13,7 +13,7 @@ internal class RemoteStore<K, V> : Store.Remote<K, V> {
 
     private val module = DownloaderModule.provideInstance()
 
-    override fun fetch(loadRequest: LoadRequest) {
+    override fun fetch(loadRequest: LoadRequest, callback: LoaderCallback) {
         val okHttpClient = module.getOkHttpClient(loadRequest.cacheDir)
         val request = module.getRequest(loadRequest.url)
         val converter = module.getConverterStrategy(loadRequest.converterType)
@@ -21,11 +21,11 @@ internal class RemoteStore<K, V> : Store.Remote<K, V> {
         val future = worker.submit(task)
 
         try {
-            onSuccess(future.get(), loadRequest.callback)
+            onSuccess(future.get(), callback)
         } catch (e: ExecutionException) {
-            onError(e, loadRequest.callback)
+            onError(e, callback)
         } catch (e: CancellationException) {
-            onError(e, loadRequest.callback)
+            onError(e, callback)
         }
     }
 

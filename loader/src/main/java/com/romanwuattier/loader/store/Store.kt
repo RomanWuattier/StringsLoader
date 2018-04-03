@@ -19,8 +19,9 @@ internal interface Store<K, V> {
      * Fetch data according to [LoadRequest] specification
      *
      * [loadRequest] Loading specification
+     * [callback] Asynchronous Callback
      */
-    fun fetch(loadRequest: LoadRequest)
+    fun fetch(loadRequest: LoadRequest, callback: LoaderCallback)
 
     /**
      * Trigger [LoaderCallback.onComplete] method when [fetch]ing, deserializing and storing in memory are succeed

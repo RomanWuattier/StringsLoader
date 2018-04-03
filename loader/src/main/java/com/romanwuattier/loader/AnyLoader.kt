@@ -30,9 +30,9 @@ class AnyLoader private constructor() : Loader {
         callback: LoaderCallback) {
         checkMainThread()
 
-        request = LoadRequest(url, cacheDir, converterType, callback)
+        request = LoadRequest(url, cacheDir, converterType)
         val store = module.getStorePolicy<K, V>()
-        load(request, store)
+        load(request, store, callback)
     }
 
     override fun <K, V> reload(callback: LoaderCallback) {
@@ -43,11 +43,11 @@ class AnyLoader private constructor() : Loader {
         }
 
         val store = module.getRemoteStore<K, V>()
-        load(request, store)
+        load(request, store, callback)
     }
 
-    private fun <K, V> load(request: LoadRequest, store: Store<K, V>) {
-        store.fetch(request)
+    private fun <K, V> load(request: LoadRequest, store: Store<K, V>, callback: LoaderCallback) {
+        store.fetch(request, callback)
     }
 
     override fun <K, V> get(key: K): V? {

@@ -30,16 +30,10 @@ class DownloaderModule private constructor() {
     private val converterFactory = ConverterFactory()
 
     @Synchronized
-    internal fun getOkHttpClient(defaultCacheDir: File): OkHttpClient {
-        val cache = provider.buildCache(defaultCacheDir)
-        return provider.buildOkHttpClient(cache)
-    }
+    internal fun getOkHttpClient(defaultCacheDir: File): OkHttpClient = provider.buildOkHttpClient(defaultCacheDir)
 
     @Synchronized
-    internal fun getRequest(url: String): Request {
-        val cacheControl = provider.buildCacheControl()
-        return provider.buildOkHttpRequest(url, cacheControl)
-    }
+    internal fun getRequest(url: String): Request = provider.buildOkHttpRequest(url)
 
     @Synchronized
     internal fun getConverterStrategy(type: ConverterType): ConverterStrategy = converterFactory.getConverter(type)

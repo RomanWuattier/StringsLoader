@@ -13,17 +13,27 @@ internal class OkHttpProvider {
     private val CACHE_FILE = "loader-cache"
     private val CACHE_MAX_AGE_IN_MINUTE = 10
 
-    internal fun buildOkHttpClient(cache: Cache): OkHttpClient = OkHttpClient.Builder().cache(cache).build()
+    private lateinit var client: OkHttpClient
+    private lateinit var request: Request
 
-    internal fun buildCache(defaultCacheDir: File): Cache = Cache(
-        createDefaultCacheDirectory(defaultCacheDir), CACHE_SIZE)
+    internal fun buildOkHttpClient(defaultCacheDir: File): OkHttpClient = if (!::client.isInitialized) {
+        client = OkHttpClient.Builder().cache(buildCache(defaultCacheDir)).build()
+        client
+    } else {
+        client
+    }
 
-    internal fun buildOkHttpRequest(url: String, cacheControl: CacheControl): Request = Request.Builder()
-        .url(url)
-        .cacheControl(cacheControl)
-        .build()
+    private fun buildCache(defaultCacheDir: File): Cache = Cache(createDefaultCacheDirectory(defaultCacheDir),
+        CACHE_SIZE)
 
-    internal fun buildCacheControl() = CacheControl.Builder().maxAge(CACHE_MAX_AGE_IN_MINUTE, TimeUnit.MINUTES).build()
+    internal fun buildOkHttpRequest(url: String): Request = if (!::request.isInitialized) {
+        request = Request.Builder().url(url).cacheControl(buildCacheControl()).build()
+        request
+    } else {
+        request
+    }
+
+    private fun buildCacheControl() = CacheControl.Builder().maxAge(CACHE_MAX_AGE_IN_MINUTE, TimeUnit.MINUTES).build()
 
     private fun createDefaultCacheDirectory(defaultCacheDir: File): File {
         val cache = File(defaultCacheDir, CACHE_FILE)

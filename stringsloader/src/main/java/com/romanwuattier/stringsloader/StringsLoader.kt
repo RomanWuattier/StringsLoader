@@ -6,34 +6,18 @@ import com.romanwuattier.loader.utils.checkMainThread
 import java.io.File
 
 /**
- * A Singleton class that provides all the library methods to retrieve [String] from [Any] key
+ * A static object that provides all the library methods to retrieve [String] from [Any] key
  */
-class StringsLoader private constructor() {
-
-    companion object Provider {
-        @Volatile
-        private var instance: StringsLoader? = null
-
-        @Synchronized
-        fun provideInstance(): StringsLoader {
-            checkMainThread()
-
-            if (instance == null) {
-                instance = StringsLoader()
-            }
-            return instance as StringsLoader
-        }
-    }
+object StringsLoader {
 
     private val EMPTY = ""
 
-    private val module = StringsLoaderModule.provideInstance()
+    private val loader = StringsLoaderModule.provideInstance().getAnyLoader()
 
     @Synchronized
     fun load(url: String, cacheDir: File, converterType: ConverterType, callback: LoaderCallback) {
         checkMainThread()
 
-        val loader = module.getAnyLoader()
         loader.load<Any, String>(url, cacheDir, converterType, callback)
     }
 
@@ -41,14 +25,12 @@ class StringsLoader private constructor() {
     fun reload(callback: LoaderCallback) {
         checkMainThread()
 
-        val loader = module.getAnyLoader()
         loader.reload<Any, String>(callback)
     }
 
     fun get(key: Any): String {
         checkMainThread()
 
-        val loader = module.getAnyLoader()
         return loader.get<Any, String>(key) ?: EMPTY
     }
 
@@ -56,7 +38,7 @@ class StringsLoader private constructor() {
     fun clear(): Boolean {
         checkMainThread()
 
-        val loader = module.getAnyLoader()
         return loader.clear<Any, String>()
     }
+
 }

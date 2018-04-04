@@ -25,8 +25,6 @@ class MainActivity : AppCompatActivity() {
     private val clearKeys by lazy { findViewById<Button>(R.id.clearKeys) }
     private val reloadKeys by lazy { findViewById<Button>(R.id.reloadKeys) }
 
-    private val stringsLoader = StringsLoader.provideInstance()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -37,13 +35,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setKeys() {
-        val string2 = stringsLoader.get("key.2")
+        val string2 = StringsLoader.get("key.2")
         tvKey2.text = string2
 
-        val string3 = stringsLoader.get("key.3")
+        val string3 = StringsLoader.get("key.3")
         tvKey3.text = string3
 
-        val string1 = stringsLoader.get("key.1")
+        val string1 = StringsLoader.get("key.1")
         tvKey1.text = string1
     }
 
@@ -54,7 +52,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun reloadKeys() {
-        stringsLoader.reload(object : LoaderCallback {
+        StringsLoader.reload(object : LoaderCallback {
             override fun onComplete() {
                 setKeys()
             }

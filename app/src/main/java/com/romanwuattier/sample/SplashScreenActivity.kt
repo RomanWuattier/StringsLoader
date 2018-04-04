@@ -14,7 +14,7 @@ class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        StringsLoader.provideInstance().load(URL, CACHE_DIR, ConverterType.JSON, object : LoaderCallback {
+        StringsLoader.load(URL, CACHE_DIR, ConverterType.JSON, object : LoaderCallback {
             override fun onComplete() {
                 navigateToNextPage()
                 finish()

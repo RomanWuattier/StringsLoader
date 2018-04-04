@@ -21,8 +21,6 @@ internal class StringsLoaderModule {
         }
     }
 
-    private val anyLoader: Loader = AnyLoader.provideInstance()
-
     @Synchronized
-    fun getAnyLoader(): Loader = anyLoader
+    fun getAnyLoader(): Loader = AnyLoader.provideInstance()
 }

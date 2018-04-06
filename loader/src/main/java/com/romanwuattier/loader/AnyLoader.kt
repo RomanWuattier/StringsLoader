@@ -26,6 +26,7 @@ class AnyLoader private constructor() : Loader {
 
     private lateinit var request: LoadRequest
 
+    @Synchronized
     override fun <K, V> load(url: String, cacheDir: File, converterType: ConverterType,
         callback: LoaderCallback) {
         checkMainThread()
@@ -35,6 +36,7 @@ class AnyLoader private constructor() : Loader {
         load(request, store, callback)
     }
 
+    @Synchronized
     override fun <K, V> reload(callback: LoaderCallback) {
         checkMainThread()
 
@@ -61,6 +63,7 @@ class AnyLoader private constructor() : Loader {
         }
     }
 
+    @Synchronized
     override fun <K, V> clear(): Boolean {
         checkMainThread()
 

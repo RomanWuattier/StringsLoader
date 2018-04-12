@@ -2,10 +2,7 @@
 StringsLoader simplifies the way of loading Strings from a remote source in an Android application.
 
 ## How to use it
-First of all, make sure the application has `android.permission.INTERNET` permission,
-otherwise you won't be able to download anything.
-
-StringsLoader exposes a method to load Strings from a JSON remote file. Because the loading request is asynchrone,
+StringsLoader exposes a method to load Strings from a JSON remote file. Because the loading request is asynchronous,
 you'll have to implement `LoaderCallback` interface.
 An example is worth a thousand words, so
 ```kotlin

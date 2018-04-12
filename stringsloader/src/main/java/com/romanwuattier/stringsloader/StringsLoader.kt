@@ -28,7 +28,7 @@ class StringsLoader {
          *             override fun onError() {
          *                 // An error occurred
          *             }
-         *         }
+         *         })
          *     </code></pre>
          * </p>
          *
@@ -69,7 +69,7 @@ class StringsLoader {
          *             override fun onError() {
          *                 // An error occurred
          *             }
-         *         }
+         *         })
          *     </code></pre>
          * </p>
          *

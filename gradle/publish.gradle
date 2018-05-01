@@ -1,0 +1,80 @@
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+version = VERSION_NAME
+group = GROUP
+
+static def isReleaseBuild() {
+    return !VERSION_NAME.contains("SNAPSHOT")
+}
+
+def getReleaseRepositoryUrl() {
+    return hasProperty('RELEASE_URL') ? RELEASE_URL : ""
+}
+
+def getSnapshotRepositoryUrl() {
+    return hasProperty('SNAPSHOT_URL') ? SNAPSHOT_URL : ""
+}
+
+def getRepositoryUsername() {
+    return hasProperty('USERNAME') ? USERNAME : ""
+}
+
+def getRepositoryPassword() {
+    return hasProperty('PASSWORD') ? PASSWORD : ""
+}
+
+signing {
+    required { isReleaseBuild() && gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: getReleaseRepositoryUrl()) {
+                authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+            }
+            snapshotRepository(url: getSnapshotRepositoryUrl()) {
+                authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+            }
+
+            groupId GROUP
+            artifactId ARTIFACT_ID
+            version VERSION_NAME
+
+            pom.project {
+                packaging PACKAGING
+                groupId GROUP
+                artifactId ARTIFACT_ID
+
+                name PROJECT_NAME
+                description PROJECT_DESCRIPTION
+                url URL
+
+                developers {
+                    developer {
+                        id DEVELOPER_ID
+                        name DEVELOPER_NAME
+                        email DEVELOPER_EMAIL
+                    }
+                }
+
+                licenses {
+                    license {
+                        name LICENCE_NAME
+                        url LICENCE_URL
+                    }
+                }
+
+                scm {
+                    url URL
+                    connection SCM_CONNECTION
+                    developerConnection SCM_CONNECTION
+                }
+            }
+        }
+    }
+}

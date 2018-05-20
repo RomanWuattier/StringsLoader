@@ -9,11 +9,15 @@ interface Loader {
 
     /**
      * Expose an asynchronously loading method to other libraries. When the data is loaded the [callback] is triggered.
-     * Load data from the [Store.Remote] or the [Store.Memory] according to the policy.
+     * Load data from the [Store.Remote] according to the policy.
      */
     fun <K, V> loadFromRemote(url: String, cacheDir: File, converterType: ConverterType, callback: LoaderCallback)
 
-    fun <K, V> loadFromLocal(context: Context, converterType: ConverterType, callback: LoaderCallback)
+    /**
+     * Expose an asynchronously loading method to other libraries. When the data is loaded the [callback] is triggered.
+     * Load data from the [Store.Local] according to the policy.
+     */
+    fun <K, V> loadFromLocal(path: String, context: Context, converterType: ConverterType, callback: LoaderCallback)
 
     /**
      * Expose an asynchronously reloading method to other libraries. When the data is loaded the [callback] is
@@ -21,11 +25,19 @@ interface Loader {
      * Load data from the [Store.Remote].
      *
      * @throws IllegalStateException when the [LoadRequest] has not been initialized first. If this exception is
-     * triggered then use [load] method first.
+     * triggered then use [loadFromRemote] method first.
      */
     @Throws(IllegalStateException::class)
     fun <K, V> reloadFromRemote(callback: LoaderCallback)
 
+    /**
+     * Expose an asynchronously reloading method to other libraries. When the data is loaded the [callback] is
+     * triggered.
+     * Load data from the [Store.Local].
+     *
+     * @throws IllegalStateException when the [LoadRequest] has not been initialized first. If this exception is
+     * triggered then use [loadFromLocal] method first.
+     */
     @Throws(IllegalStateException::class)
     fun <K, V> reloadFromLocal(callback: LoaderCallback)
 

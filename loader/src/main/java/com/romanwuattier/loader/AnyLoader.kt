@@ -2,6 +2,7 @@ package com.romanwuattier.loader
 
 import android.content.Context
 import com.romanwuattier.loader.converter.ConverterType
+import com.romanwuattier.loader.data.LocalRequest
 import com.romanwuattier.loader.data.RemoteRequest
 import com.romanwuattier.loader.data.Request
 import com.romanwuattier.loader.store.MemoryStore
@@ -28,7 +29,7 @@ class AnyLoader private constructor() : Loader {
 
     private lateinit var remoteRequest: Request
 
-    private lateinit var locaRequest: Request
+    private lateinit var localRequest: Request
 
     @Synchronized
     override fun <K, V> loadFromRemote(url: String, cacheDir: File, converterType: ConverterType,
@@ -41,7 +42,13 @@ class AnyLoader private constructor() : Loader {
     }
 
     @Synchronized
-    override fun <K, V> loadFromLocal(context: Context, converterType: ConverterType, callback: LoaderCallback) {
+    override fun <K, V> loadFromLocal(path: String, context: Context, converterType: ConverterType,
+        callback: LoaderCallback) {
+        checkMainThread()
+
+        localRequest = LocalRequest(context, path, converterType)
+        val store = module.getLocalStore<K, V>()
+        load(remoteRequest, store, callback)
     }
 
     @Synchronized
@@ -58,6 +65,14 @@ class AnyLoader private constructor() : Loader {
 
     @Synchronized
     override fun <K, V> reloadFromLocal(callback: LoaderCallback) {
+        checkMainThread()
+
+        if (!::localRequest.isInitialized) {
+            throw IllegalStateException()
+        }
+
+        val store = module.getLocalStore<K, V>()
+        load(localRequest, store, callback)
     }
 
     private fun <K, V> load(request: Request, store: Store.AsyncStore<K, V>, callback: LoaderCallback) {

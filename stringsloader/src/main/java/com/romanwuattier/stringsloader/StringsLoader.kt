@@ -1,5 +1,6 @@
 package com.romanwuattier.stringsloader
 
+import android.content.Context
 import com.romanwuattier.loader.LoaderCallback
 import com.romanwuattier.loader.converter.ConverterType
 import com.romanwuattier.loader.utils.checkMainThread
@@ -32,16 +33,6 @@ class StringsLoader {
          *     </code></pre>
          * </p>
          *
-         * <p>
-         *     The policy used to loadFromRemote data follows:
-         *     <ul>
-         *         <li> When the store has already been initialized and is not empty, then loadFromRemote data from the store.
-         *         The callback interface is triggered immediately. </li>
-         *         <li> When the store has not been initialized yet or is empty, then loadFromRemote the data from the remote
-         *         source and update the store. </li>
-         *     </ul>
-         * </p>
-         *
          * @param url The url hosting the data
          * @param cacheDir The absolute path to the application specific cache directory on the filesystem
          * @param converterType The converter used to deserialize
@@ -51,6 +42,36 @@ class StringsLoader {
             checkMainThread()
 
             loader.loadFromRemote<Any, String>(url, cacheDir, converterType, callback)
+        }
+
+        /**
+         * Load asynchronously [Any] keys and [String]s value from a file [path] and a [ConverterType] into a local store.
+         *
+         * <p>
+         *     In order to be notified when the loading is successful or erroneous, the caller have to implement
+         *     the *callback* interface.
+         *     <pre><code>
+         *         StringsLoader.loadFromLocal(PATH, context, ConverterType.JSON, object : LoaderCallback {
+         *             override fun onComplete() {
+         *                 // Loading is successful
+         *             }
+         *
+         *             override fun onError() {
+         *                 // An error occurred
+         *             }
+         *         })
+         *     </code></pre>
+         * </p>
+         *
+         * @param path The local file path containing the data
+         * @param context The [Context] to load the file
+         * @param converterType The converter used to deserialize
+         * @param callback The interface used to propagate data
+         */
+        fun loadFromLocal(path: String, context: Context, converterType: ConverterType, callback: LoaderCallback) {
+            checkMainThread()
+
+            loader.loadFromLocal<Any, String>(path, context, converterType, callback)
         }
 
         /**
@@ -81,6 +102,36 @@ class StringsLoader {
             checkMainThread()
 
             loader.reloadFromRemote<Any, String>(callback)
+        }
+
+        /**
+         * Reload asynchronously the store. This action can only be triggered after calling the [loadFromLocal] method.
+         * Reload will replace every exiting data in the store by the new one.
+         *
+         * <p>
+         *     In order to be notified when the reloading is successful or erroneous, the caller have to implement
+         *     the *callback* interface.
+         *     <pre><code>
+         *         StringsLoader.reloadFromLocal(object : LoaderCallback {
+         *             override fun onComplete() {
+         *                 // Reloading is successful
+         *             }
+         *
+         *             override fun onError() {
+         *                 // An error occurred
+         *             }
+         *         })
+         *     </code></pre>
+         * </p>
+         *
+         * @param callback The interface used to propagate data
+         *
+         * @see loadFromRemote
+         */
+        fun reloadFromLocal(callback: LoaderCallback) {
+            checkMainThread()
+
+            loader.reloadFromLocal<Any, String>(callback)
         }
 
         /**

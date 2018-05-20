@@ -1,5 +1,6 @@
 package com.romanwuattier.loader.data
 
+import android.content.Context
 import com.romanwuattier.loader.converter.ConverterType
 import java.io.File
 
@@ -14,4 +15,4 @@ internal interface Request
  */
 internal data class RemoteRequest(val url: String, val cacheDir: File, val converterType: ConverterType) : Request
 
-internal data class LocalRequest(val path: String, val converterType: ConverterType) : Request
+internal data class LocalRequest(val context: Context, val path: String, val converterType: ConverterType) : Request

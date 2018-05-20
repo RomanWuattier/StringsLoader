@@ -16,6 +16,9 @@ import java.util.concurrent.ConcurrentHashMap
  */
 internal interface Store<K, V> {
 
+    /**
+     * Asynchronous [Store] representation
+     */
     interface AsyncStore<K, V> : Store<K, V> {
         /**
          * Fetch data according to [LoadRequest] specification

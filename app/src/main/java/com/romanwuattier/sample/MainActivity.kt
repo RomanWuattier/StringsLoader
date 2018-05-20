@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun reloadKeys() {
-        StringsLoader.reload(object : LoaderCallback {
+        StringsLoader.reloadFromRemote(object : LoaderCallback {
             override fun onComplete() {
                 setKeys()
             }

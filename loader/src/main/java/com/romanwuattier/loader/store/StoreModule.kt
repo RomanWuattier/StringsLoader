@@ -23,20 +23,20 @@ internal class StoreModule<K, V> private constructor() {
         }
     }
 
-    private val storePolicy = StorePolicy()
-
     private val memoryStore: Store.Memory<K, V> = MemoryStore()
 
     private val remoteStore: Store.Remote<K, V> = RemoteStore()
 
-    @Synchronized
-    internal fun getStorePolicy(): Store<K, V> = storePolicy.defineStorePolicy()
+    private val localStore: Store.Local<K, V> = LocalStore()
 
     @Synchronized
     internal fun getMemoryStore(): Store.Memory<K, V> = memoryStore
 
     @Synchronized
     internal fun getRemoteStore(): Store.Remote<K, V> = remoteStore
+
+    @Synchronized
+    internal fun getLocalStore(): Store.Local<K, V> = localStore
 }
 
 private interface GenericProvider {

@@ -1,5 +1,6 @@
 package com.romanwuattier.loader
 
+import android.content.Context
 import com.romanwuattier.loader.converter.ConverterType
 import java.io.File
 
@@ -10,7 +11,9 @@ interface Loader {
      * Expose an asynchronously loading method to other libraries. When the data is loaded the [callback] is triggered.
      * Load data from the [Store.Remote] or the [Store.Memory] according to the policy.
      */
-    fun <K, V> load(url: String, cacheDir: File, converterType: ConverterType, callback: LoaderCallback)
+    fun <K, V> loadFromRemote(url: String, cacheDir: File, converterType: ConverterType, callback: LoaderCallback)
+
+    fun <K, V> loadFromLocal(context: Context, converterType: ConverterType, callback: LoaderCallback)
 
     /**
      * Expose an asynchronously reloading method to other libraries. When the data is loaded the [callback] is
@@ -21,7 +24,10 @@ interface Loader {
      * triggered then use [load] method first.
      */
     @Throws(IllegalStateException::class)
-    fun <K, V> reload(callback: LoaderCallback)
+    fun <K, V> reloadFromRemote(callback: LoaderCallback)
+
+    @Throws(IllegalStateException::class)
+    fun <K, V> reloadFromLocal(callback: LoaderCallback)
 
     /**
      * Get a value [V] from the [Store.Memory].

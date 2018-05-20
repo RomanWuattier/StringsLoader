@@ -20,7 +20,7 @@ class StringsLoader {
          *     In order to be notified when the loading is successful or erroneous, the caller have to implement
          *     the *callback* interface.
          *     <pre><code>
-         *         StringsLoader.load(URL, CACHE_DIR, ConverterType.JSON, object : LoaderCallback {
+         *         StringsLoader.loadFromRemote(URL, CACHE_DIR, ConverterType.JSON, object : LoaderCallback {
          *             override fun onComplete() {
          *                 // Loading is successful
          *             }
@@ -33,11 +33,11 @@ class StringsLoader {
          * </p>
          *
          * <p>
-         *     The policy used to load data follows:
+         *     The policy used to loadFromRemote data follows:
          *     <ul>
-         *         <li> When the store has already been initialized and is not empty, then load data from the store.
+         *         <li> When the store has already been initialized and is not empty, then loadFromRemote data from the store.
          *         The callback interface is triggered immediately. </li>
-         *         <li> When the store has not been initialized yet or is empty, then load the data from the remote
+         *         <li> When the store has not been initialized yet or is empty, then loadFromRemote the data from the remote
          *         source and update the store. </li>
          *     </ul>
          * </p>
@@ -47,21 +47,21 @@ class StringsLoader {
          * @param converterType The converter used to deserialize
          * @param callback The interface used to propagate data
          */
-        fun load(url: String, cacheDir: File, converterType: ConverterType, callback: LoaderCallback) {
+        fun loadFromRemote(url: String, cacheDir: File, converterType: ConverterType, callback: LoaderCallback) {
             checkMainThread()
 
-            loader.load<Any, String>(url, cacheDir, converterType, callback)
+            loader.loadFromRemote<Any, String>(url, cacheDir, converterType, callback)
         }
 
         /**
-         * Reload asynchronously the store. This action can only be triggered after calling the [load] method.
+         * Reload asynchronously the store. This action can only be triggered after calling the [loadFromRemote] method.
          * Reload will replace every exiting data in the store by the new one.
          *
          * <p>
          *     In order to be notified when the reloading is successful or erroneous, the caller have to implement
          *     the *callback* interface.
          *     <pre><code>
-         *         StringsLoader.reload(object : LoaderCallback {
+         *         StringsLoader.reloadFromRemote(object : LoaderCallback {
          *             override fun onComplete() {
          *                 // Reloading is successful
          *             }
@@ -75,12 +75,12 @@ class StringsLoader {
          *
          * @param callback The interface used to propagate data
          *
-         * @see load
+         * @see loadFromRemote
          */
-        fun reload(callback: LoaderCallback) {
+        fun reloadFromRemote(callback: LoaderCallback) {
             checkMainThread()
 
-            loader.reload<Any, String>(callback)
+            loader.reloadFromRemote<Any, String>(callback)
         }
 
         /**

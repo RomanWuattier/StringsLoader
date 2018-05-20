@@ -3,7 +3,8 @@ package com.romanwuattier.loader.store
 import com.romanwuattier.loader.DownloadTask
 import com.romanwuattier.loader.LoaderCallback
 import com.romanwuattier.loader.SaveTask
-import com.romanwuattier.loader.data.LoadRequest
+import com.romanwuattier.loader.data.RemoteRequest
+import com.romanwuattier.loader.data.Request
 import com.romanwuattier.loader.downloader.DownloaderModule
 import java.util.concurrent.*
 
@@ -13,10 +14,11 @@ internal class RemoteStore<K, V> : Store.Remote<K, V> {
 
     private val module = DownloaderModule.provideInstance()
 
-    override fun fetch(loadRequest: LoadRequest, callback: LoaderCallback) {
-        val okHttpClient = module.getOkHttpClient(loadRequest.cacheDir)
-        val request = module.getRequest(loadRequest.url)
-        val converter = module.getConverterStrategy(loadRequest.converterType)
+    override fun fetch(loadRequest: Request, callback: LoaderCallback) {
+        val remoteRequest: RemoteRequest = loadRequest as RemoteRequest
+        val okHttpClient = module.getOkHttpClient(remoteRequest.cacheDir)
+        val request = module.getRequest(remoteRequest.url)
+        val converter = module.getConverterStrategy(remoteRequest.converterType)
         val task = DownloadTask<K, V>(okHttpClient, request, converter)
         val future = worker.submit(task)
 

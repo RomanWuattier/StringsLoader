@@ -20,28 +20,6 @@ interface Loader {
     fun <K, V> loadFromLocal(path: String, context: Context, converterType: ConverterType, callback: LoaderCallback)
 
     /**
-     * Expose an asynchronously reloading method to other libraries. When the data is loaded the [callback] is
-     * triggered.
-     * Load data from the [Store.Remote].
-     *
-     * @throws IllegalStateException when the [LoadRequest] has not been initialized first. If this exception is
-     * triggered then use [loadFromRemote] method first.
-     */
-    @Throws(IllegalStateException::class)
-    fun <K, V> reloadFromRemote(callback: LoaderCallback)
-
-    /**
-     * Expose an asynchronously reloading method to other libraries. When the data is loaded the [callback] is
-     * triggered.
-     * Load data from the [Store.Local].
-     *
-     * @throws IllegalStateException when the [LoadRequest] has not been initialized first. If this exception is
-     * triggered then use [loadFromLocal] method first.
-     */
-    @Throws(IllegalStateException::class)
-    fun <K, V> reloadFromLocal(callback: LoaderCallback)
-
-    /**
      * Get a value [V] from the [Store.Memory].
      *
      * @return null when the key [K] is not found, the [Store.Memory] is empty or has not been initialized

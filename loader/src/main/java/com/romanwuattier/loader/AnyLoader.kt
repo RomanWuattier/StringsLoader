@@ -5,7 +5,6 @@ import com.romanwuattier.loader.converter.ConverterType
 import com.romanwuattier.loader.data.LocalRequest
 import com.romanwuattier.loader.data.RemoteRequest
 import com.romanwuattier.loader.data.Request
-import com.romanwuattier.loader.store.MemoryStore
 import com.romanwuattier.loader.store.Store
 import com.romanwuattier.loader.utils.checkMainThread
 import java.io.File
@@ -27,16 +26,12 @@ class AnyLoader private constructor() : Loader {
 
     private val module = LoaderModule.provideInstance()
 
-    private lateinit var remoteRequest: Request
-
-    private lateinit var localRequest: Request
-
     @Synchronized
     override fun <K, V> loadFromRemote(url: String, cacheDir: File, converterType: ConverterType,
         callback: LoaderCallback) {
         checkMainThread()
 
-        remoteRequest = RemoteRequest(url, cacheDir, converterType)
+        val remoteRequest = RemoteRequest(url, cacheDir, converterType)
         val store = module.getRemoteStore<K, V>()
         load(remoteRequest, store, callback)
     }
@@ -46,31 +41,7 @@ class AnyLoader private constructor() : Loader {
         callback: LoaderCallback) {
         checkMainThread()
 
-        localRequest = LocalRequest(context, path, converterType)
-        val store = module.getLocalStore<K, V>()
-        load(localRequest, store, callback)
-    }
-
-    @Synchronized
-    override fun <K, V> reloadFromRemote(callback: LoaderCallback) {
-        checkMainThread()
-
-        if (!::remoteRequest.isInitialized) {
-            throw IllegalStateException()
-        }
-
-        val store = module.getRemoteStore<K, V>()
-        load(remoteRequest, store, callback)
-    }
-
-    @Synchronized
-    override fun <K, V> reloadFromLocal(callback: LoaderCallback) {
-        checkMainThread()
-
-        if (!::localRequest.isInitialized) {
-            throw IllegalStateException()
-        }
-
+        val localRequest = LocalRequest(context, path, converterType)
         val store = module.getLocalStore<K, V>()
         load(localRequest, store, callback)
     }

@@ -75,66 +75,6 @@ class StringsLoader {
         }
 
         /**
-         * Reload asynchronously the store. This action can only be triggered after calling the [loadFromRemote] method.
-         * Reload will replace every exiting data in the store by the new one.
-         *
-         * <p>
-         *     In order to be notified when the reloading is successful or erroneous, the caller have to implement
-         *     the *callback* interface.
-         *     <pre><code>
-         *         StringsLoader.reloadFromRemote(object : LoaderCallback {
-         *             override fun onComplete() {
-         *                 // Reloading is successful
-         *             }
-         *
-         *             override fun onError() {
-         *                 // An error occurred
-         *             }
-         *         })
-         *     </code></pre>
-         * </p>
-         *
-         * @param callback The interface used to propagate data
-         *
-         * @see loadFromRemote
-         */
-        fun reloadFromRemote(callback: LoaderCallback) {
-            checkMainThread()
-
-            loader.reloadFromRemote<Any, String>(callback)
-        }
-
-        /**
-         * Reload asynchronously the store. This action can only be triggered after calling the [loadFromLocal] method.
-         * Reload will replace every exiting data in the store by the new one.
-         *
-         * <p>
-         *     In order to be notified when the reloading is successful or erroneous, the caller have to implement
-         *     the *callback* interface.
-         *     <pre><code>
-         *         StringsLoader.reloadFromLocal(object : LoaderCallback {
-         *             override fun onComplete() {
-         *                 // Reloading is successful
-         *             }
-         *
-         *             override fun onError() {
-         *                 // An error occurred
-         *             }
-         *         })
-         *     </code></pre>
-         * </p>
-         *
-         * @param callback The interface used to propagate data
-         *
-         * @see loadFromRemote
-         */
-        fun reloadFromLocal(callback: LoaderCallback) {
-            checkMainThread()
-
-            loader.reloadFromLocal<Any, String>(callback)
-        }
-
-        /**
          * Find the given [key] in the store and retrieve its corresponding [String] value. When the [key] is not
          * found, an empty [String] is returned.
          *
@@ -166,5 +106,4 @@ class StringsLoader {
             return loader.clear<Any, String>()
         }
     }
-
 }

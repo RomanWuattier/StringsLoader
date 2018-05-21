@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity() {
     private val getKeys by lazy { findViewById<Button>(R.id.getKeys) }
     private val clearKeys by lazy { findViewById<Button>(R.id.clearKeys) }
     private val loadLocal by lazy { findViewById<Button>(R.id.loadLocal) }
-    private val reloadKeys by lazy { findViewById<Button>(R.id.reloadKeys) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +33,6 @@ class MainActivity : AppCompatActivity() {
         getKeys.setOnClickListener({ setKeys() })
         clearKeys.setOnClickListener({ clearKeys() })
         loadLocal.setOnClickListener({ loadFromLocal() })
-        reloadKeys.setOnClickListener({ reloadKeys() })
     }
 
     private fun setKeys() {
@@ -56,18 +54,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadFromLocal() {
         StringsLoader.loadFromLocal("strings.json", this, ConverterType.JSON, object : LoaderCallback {
-            override fun onComplete() {
-                setKeys()
-            }
-
-            override fun onError(throwable: Throwable) {
-                // An exception occurred
-            }
-        })
-    }
-
-    private fun reloadKeys() {
-        StringsLoader.reloadFromRemote(object : LoaderCallback {
             override fun onComplete() {
                 setKeys()
             }

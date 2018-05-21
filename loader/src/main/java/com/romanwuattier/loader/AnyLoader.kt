@@ -48,7 +48,7 @@ class AnyLoader private constructor() : Loader {
 
         localRequest = LocalRequest(context, path, converterType)
         val store = module.getLocalStore<K, V>()
-        load(remoteRequest, store, callback)
+        load(localRequest, store, callback)
     }
 
     @Synchronized

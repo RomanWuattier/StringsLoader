@@ -38,6 +38,13 @@
         />
 
     <Button
+        android:id="@+id/loadLocal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Load from local"
+        />
+
+    <Button
         android:id="@+id/reloadKeys"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

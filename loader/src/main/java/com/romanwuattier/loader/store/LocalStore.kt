@@ -1,8 +1,8 @@
 package com.romanwuattier.loader.store
 
-import com.romanwuattier.loader.FileReaderTask
+import com.romanwuattier.loader.task.FileReaderTask
 import com.romanwuattier.loader.LoaderCallback
-import com.romanwuattier.loader.SaveTask
+import com.romanwuattier.loader.task.SaveTask
 import com.romanwuattier.loader.data.LocalRequest
 import com.romanwuattier.loader.data.Request
 import com.romanwuattier.loader.filereader.FileReaderModule

@@ -1,4 +1,4 @@
-package com.romanwuattier.loader
+package com.romanwuattier.loader.task
 
 import com.romanwuattier.loader.store.Store
 import java.util.concurrent.Callable

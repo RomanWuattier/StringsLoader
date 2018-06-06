@@ -25,10 +25,10 @@ internal class LoaderModule private constructor() {
     }
 
     @Synchronized
-    internal fun <K, V> getStorePolicy(): Store<K, V> = StoreModule.provideInstance<K, V>().getStorePolicy()
+    internal fun <K, V> getRemoteStore(): Store.Remote<K, V> = StoreModule.provideInstance<K, V>().getRemoteStore()
 
     @Synchronized
-    internal fun <K, V> getRemoteStore(): Store.Remote<K, V> = StoreModule.provideInstance<K, V>().getRemoteStore()
+    internal fun <K, V> getLocalStore(): Store.Local<K, V> = StoreModule.provideInstance<K, V>().getLocalStore()
 
     @Synchronized
     internal fun <K, V> getMemoryStore(): Store.Memory<K, V> = StoreModule.provideInstance<K, V>().getMemoryStore()

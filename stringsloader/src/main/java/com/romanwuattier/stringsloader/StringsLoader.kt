@@ -1,5 +1,6 @@
 package com.romanwuattier.stringsloader
 
+import android.content.Context
 import com.romanwuattier.loader.LoaderCallback
 import com.romanwuattier.loader.converter.ConverterType
 import com.romanwuattier.loader.utils.checkMainThread
@@ -20,7 +21,7 @@ class StringsLoader {
          *     In order to be notified when the loading is successful or erroneous, the caller have to implement
          *     the *callback* interface.
          *     <pre><code>
-         *         StringsLoader.load(URL, CACHE_DIR, ConverterType.JSON, object : LoaderCallback {
+         *         StringsLoader.loadFromRemote(URL, CACHE_DIR, ConverterType.JSON, object : LoaderCallback {
          *             override fun onComplete() {
          *                 // Loading is successful
          *             }
@@ -32,38 +33,27 @@ class StringsLoader {
          *     </code></pre>
          * </p>
          *
-         * <p>
-         *     The policy used to load data follows:
-         *     <ul>
-         *         <li> When the store has already been initialized and is not empty, then load data from the store.
-         *         The callback interface is triggered immediately. </li>
-         *         <li> When the store has not been initialized yet or is empty, then load the data from the remote
-         *         source and update the store. </li>
-         *     </ul>
-         * </p>
-         *
          * @param url The url hosting the data
          * @param cacheDir The absolute path to the application specific cache directory on the filesystem
          * @param converterType The converter used to deserialize
          * @param callback The interface used to propagate data
          */
-        fun load(url: String, cacheDir: File, converterType: ConverterType, callback: LoaderCallback) {
+        fun loadFromRemote(url: String, cacheDir: File, converterType: ConverterType, callback: LoaderCallback) {
             checkMainThread()
 
-            loader.load<Any, String>(url, cacheDir, converterType, callback)
+            loader.loadFromRemote<Any, String>(url, cacheDir, converterType, callback)
         }
 
         /**
-         * Reload asynchronously the store. This action can only be triggered after calling the [load] method.
-         * Reload will replace every exiting data in the store by the new one.
+         * Load asynchronously [Any] keys and [String]s value from a file [path] and a [ConverterType] into a local store.
          *
          * <p>
-         *     In order to be notified when the reloading is successful or erroneous, the caller have to implement
+         *     In order to be notified when the loading is successful or erroneous, the caller have to implement
          *     the *callback* interface.
          *     <pre><code>
-         *         StringsLoader.reload(object : LoaderCallback {
+         *         StringsLoader.loadFromLocal(PATH, context, ConverterType.JSON, object : LoaderCallback {
          *             override fun onComplete() {
-         *                 // Reloading is successful
+         *                 // Loading is successful
          *             }
          *
          *             override fun onError() {
@@ -73,14 +63,15 @@ class StringsLoader {
          *     </code></pre>
          * </p>
          *
+         * @param path The local file path containing the data
+         * @param context The [Context] to load the file
+         * @param converterType The converter used to deserialize
          * @param callback The interface used to propagate data
-         *
-         * @see load
          */
-        fun reload(callback: LoaderCallback) {
+        fun loadFromLocal(path: String, context: Context, converterType: ConverterType, callback: LoaderCallback) {
             checkMainThread()
 
-            loader.reload<Any, String>(callback)
+            loader.loadFromLocal<Any, String>(path, context, converterType, callback)
         }
 
         /**
@@ -115,5 +106,4 @@ class StringsLoader {
             return loader.clear<Any, String>()
         }
     }
-
 }

@@ -1,8 +1,10 @@
 package com.romanwuattier.loader
 
+import android.content.Context
 import com.romanwuattier.loader.converter.ConverterType
-import com.romanwuattier.loader.data.LoadRequest
-import com.romanwuattier.loader.store.MemoryStore
+import com.romanwuattier.loader.data.LocalRequest
+import com.romanwuattier.loader.data.RemoteRequest
+import com.romanwuattier.loader.data.Request
 import com.romanwuattier.loader.store.Store
 import com.romanwuattier.loader.utils.checkMainThread
 import java.io.File
@@ -24,43 +26,35 @@ class AnyLoader private constructor() : Loader {
 
     private val module = LoaderModule.provideInstance()
 
-    private lateinit var request: LoadRequest
-
     @Synchronized
-    override fun <K, V> load(url: String, cacheDir: File, converterType: ConverterType,
+    override fun <K, V> loadFromRemote(url: String, cacheDir: File, converterType: ConverterType,
         callback: LoaderCallback) {
         checkMainThread()
 
-        request = LoadRequest(url, cacheDir, converterType)
-        val store = module.getStorePolicy<K, V>()
-        load(request, store, callback)
+        val remoteRequest = RemoteRequest(url, cacheDir, converterType)
+        val store = module.getRemoteStore<K, V>()
+        load(remoteRequest, store, callback)
     }
 
     @Synchronized
-    override fun <K, V> reload(callback: LoaderCallback) {
+    override fun <K, V> loadFromLocal(path: String, context: Context, converterType: ConverterType,
+        callback: LoaderCallback) {
         checkMainThread()
 
-        if (!::request.isInitialized) {
-            throw IllegalStateException()
-        }
-
-        val store = module.getRemoteStore<K, V>()
-        load(request, store, callback)
+        val localRequest = LocalRequest(context, path, converterType)
+        val store = module.getLocalStore<K, V>()
+        load(localRequest, store, callback)
     }
 
-    private fun <K, V> load(request: LoadRequest, store: Store<K, V>, callback: LoaderCallback) {
+    private fun <K, V> load(request: Request, store: Store.AsyncStore<K, V>, callback: LoaderCallback) {
         store.fetch(request, callback)
     }
 
     override fun <K, V> get(key: K): V? {
         checkMainThread()
 
-        val store = module.getStorePolicy<K, V>()
-        return if (store is MemoryStore<K, V>) {
-            store.get(key)
-        } else {
-            null
-        }
+        val store = module.getMemoryStore<K, V>()
+        return store.get(key)
     }
 
     @Synchronized

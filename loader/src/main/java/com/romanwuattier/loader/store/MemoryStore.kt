@@ -1,7 +1,5 @@
 package com.romanwuattier.loader.store
 
-import com.romanwuattier.loader.LoaderCallback
-import com.romanwuattier.loader.data.LoadRequest
 import java.util.concurrent.ConcurrentHashMap
 
 internal class MemoryStore<K, V> : Store.Memory<K, V> {
@@ -12,15 +10,7 @@ internal class MemoryStore<K, V> : Store.Memory<K, V> {
 
     override fun isEmpty(): Boolean = memoryMap.isEmpty()
 
-    override fun fetch(loadRequest: LoadRequest, callback: LoaderCallback) {
-        if (hasBeenInitialized()) {
-            onSuccess(memoryMap, callback)
-        } else {
-            onError(IllegalStateException("Map shouldn't be empty"), callback)
-        }
-    }
-
-    override fun get(key: K): V? = memoryMap[key]
+    override fun get(key: K): V? = if (!hasBeenInitialized()) null else memoryMap[key]
 
     override fun putAll(map: ConcurrentHashMap<K, V>) {
         if (!hasBeenInitialized()) {
@@ -30,18 +20,11 @@ internal class MemoryStore<K, V> : Store.Memory<K, V> {
         }
     }
 
-    override fun clear(): Boolean = if (hasBeenInitialized()) {
+    override fun clear(): Boolean = if (hasBeenInitialized() && !memoryMap.isEmpty()) {
         memoryMap.clear()
         isEmpty()
     } else {
         false
     }
 
-    override fun onSuccess(map: ConcurrentHashMap<K, V>, callback: LoaderCallback) {
-        callback.onComplete()
-    }
-
-    override fun onError(throwable: Throwable, callback: LoaderCallback) {
-        callback.onError(throwable)
-    }
 }

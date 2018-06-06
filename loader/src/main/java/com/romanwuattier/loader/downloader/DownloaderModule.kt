@@ -8,7 +8,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import java.io.File
 
-class DownloaderModule private constructor() {
+internal class DownloaderModule private constructor() {
 
     companion object Provider {
         @Volatile

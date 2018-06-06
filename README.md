@@ -2,11 +2,22 @@
 StringsLoader simplifies the way of loading Strings from a remote source in an Android application.
 
 ## How to use it
-StringsLoader exposes a method to load Strings from a JSON remote file. Because the loading request is asynchronous,
+StringsLoader exposes a method to load Strings from a JSON remote and local file. Because the loading request is asynchronous,
 you'll have to implement `LoaderCallback` interface.
 An example is worth a thousand words, so
 ```kotlin
-StringsLoader.load(URL, CACHE_DIRECTORY, ConverterType.JSON, object : LoaderCallback {
+StringsLoader.loadFromRemote(URL, CACHE_DIRECTORY, ConverterType.JSON, object : LoaderCallback {
+    override fun onComplete() {
+        // The download has successfully completed
+    }
+
+    override fun onError(throwable: Throwable) {
+        // An exception occurred
+    }
+})
+```
+```kotlin
+StringsLoader.loadFromLocal(PATH, context, ConverterType.JSON, object : LoaderCallback {
     override fun onComplete() {
         // The download has successfully completed
     }
@@ -22,13 +33,12 @@ StringsLoader return an empty string.
 val str = StringsLoader.get("key.1")
 ```
 
-Note that StringsLoader is a singleton. A single instance of the cache is created. To clear the cache and reload it,
-both `clear` function and `reload` method are provided.
+Note that StringsLoader is a singleton. A single instance of the cache is created. To clear the cache a
+`clear` function is provided.
 
 ## Improvements
 * Centralize error management
 * Implement a retry strategy
-* Provide disk storage
 * Allows a custom configuration to manage caching with OkHttp
 
 ## Note

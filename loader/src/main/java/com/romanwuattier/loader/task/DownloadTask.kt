@@ -1,4 +1,4 @@
-package com.romanwuattier.loader
+package com.romanwuattier.loader.task
 
 import com.romanwuattier.loader.converter.ConverterStrategy
 import okhttp3.OkHttpClient

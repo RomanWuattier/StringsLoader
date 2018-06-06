@@ -38,10 +38,10 @@
         />
 
     <Button
-        android:id="@+id/reloadKeys"
+        android:id="@+id/loadLocal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reload Keys"
+        android:text="Load from local"
         />
-
+    
 </LinearLayout>

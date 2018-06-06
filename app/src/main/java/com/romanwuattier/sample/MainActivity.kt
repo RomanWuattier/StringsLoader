@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.TextView
 import com.romanwuattier.loader.LoaderCallback
+import com.romanwuattier.loader.converter.ConverterType
 import com.romanwuattier.stringsloader.StringsLoader
 
 class MainActivity : AppCompatActivity() {
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     private val tvKey3 by lazy { findViewById<TextView>(R.id.key3) }
     private val getKeys by lazy { findViewById<Button>(R.id.getKeys) }
     private val clearKeys by lazy { findViewById<Button>(R.id.clearKeys) }
-    private val reloadKeys by lazy { findViewById<Button>(R.id.reloadKeys) }
+    private val loadLocal by lazy { findViewById<Button>(R.id.loadLocal) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         getKeys.setOnClickListener({ setKeys() })
         clearKeys.setOnClickListener({ clearKeys() })
-        reloadKeys.setOnClickListener({ reloadKeys() })
+        loadLocal.setOnClickListener({ loadFromLocal() })
     }
 
     private fun setKeys() {
@@ -51,8 +52,8 @@ class MainActivity : AppCompatActivity() {
         tvKey3.text = ""
     }
 
-    private fun reloadKeys() {
-        StringsLoader.reload(object : LoaderCallback {
+    private fun loadFromLocal() {
+        StringsLoader.loadFromLocal("strings.json", this, ConverterType.JSON, object : LoaderCallback {
             override fun onComplete() {
                 setKeys()
             }

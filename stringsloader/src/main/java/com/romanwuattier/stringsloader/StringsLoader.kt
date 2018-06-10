@@ -1,6 +1,8 @@
 package com.romanwuattier.stringsloader
 
 import android.content.Context
+import android.support.v7.widget.AppCompatButton
+import android.support.v7.widget.AppCompatTextView
 import com.romanwuattier.loader.LoaderCallback
 import com.romanwuattier.loader.converter.ConverterType
 import com.romanwuattier.loader.utils.checkMainThread
@@ -82,7 +84,7 @@ class StringsLoader {
          *     <pre><code> val value = StringsLoader.get("key") </code></pre>
          * </p>
          *
-         * @param key The key associating to the [String] value
+         * @param key The key associated to the [String] value
          *
          * @return An empty [String] when the store doesn't contain the key, the [String] value otherwise
          */
@@ -94,6 +96,7 @@ class StringsLoader {
 
         /**
          * Clear the store.
+         *
          * <p>
          *     <pre><code> val isCleared = StringsLoader.clear() </code></pre>
          * </p>
@@ -104,6 +107,66 @@ class StringsLoader {
             checkMainThread()
 
             return loader.clear<Any, String>()
+        }
+
+        /**
+         * Find the given [key] in the store and set its corresponding [String] to the given [AppCompatTextView].
+         * When the [key] is not found, an empty [String] is assigned.
+         *
+         * <p>
+         *     <pre><code>StringsLoader.displayTextInView({aTextView}, {aKey})</code></pre>
+         * </p>
+         *
+         * @param view The [AppCompatTextView] to set
+         * @param key The key associated to the [String] value
+         */
+        fun displayTextInView(view: AppCompatTextView, key: Any) {
+            view.text = get(key)
+        }
+
+        /**
+         * Find the given [key] in the store and set its corresponding [String] to the given [AppCompatButton].
+         * When the [key] is not found, an empty [String] is assigned.
+         *
+         * <p>
+         *     <pre><code>StringsLoader.displayTextInView({aButton}, {aKey})</code></pre>
+         * </p>
+         *
+         * @param view The [AppCompatButton] to set
+         * @param key The key associated to the [String] value
+         */
+        fun displayTextInView(view: AppCompatButton, key: Any) {
+            view.text = get(key)
+        }
+
+        /**
+         * Find the given [key] in the store and set its corresponding [String] as hint to the given [AppCompatTextView].
+         * When the [key] is not found, an empty [String] is assigned.
+         *
+         * <p>
+         *     <pre><code>StringsLoader.displayHintInView({aTextView}, {aKey})</code></pre>
+         * </p>
+         *
+         * @param view The [AppCompatTextView] to set
+         * @param key The key associated to the [String] value
+         */
+        fun displayHintInView(view: AppCompatTextView, key: Any) {
+            view.hint = get(key)
+        }
+
+        /**
+         * Find the given [key] in the store and set its corresponding [String] as hint to the given [AppCompatButton].
+         * When the [key] is not found, an empty [String] is assigned.
+         *
+         * <p>
+         *     <pre><code>StringsLoader.displayHintInView({aButton}, {aKey})</code></pre>
+         * </p>
+         *
+         * @param view The [AppCompatButton] to set
+         * @param key The key associated to the [String] value
+         */
+        fun displayHintInView(view: AppCompatButton, key: Any) {
+            view.hint = get(key)
         }
     }
 }

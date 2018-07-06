@@ -6,9 +6,9 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.TextView
+import com.romanwuattier.loader.StringsLoader
 import com.romanwuattier.loader.LoaderCallback
-import com.romanwuattier.loader.converter.ConverterType
-import com.romanwuattier.stringsloader.StringsLoader
+import com.romanwuattier.loader.ConverterType
 
 class MainActivity : AppCompatActivity() {
 

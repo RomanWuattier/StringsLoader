@@ -3,8 +3,8 @@ package com.romanwuattier.sample
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.romanwuattier.loader.LoaderCallback
-import com.romanwuattier.loader.converter.ConverterType
-import com.romanwuattier.stringsloader.StringsLoader
+import com.romanwuattier.loader.StringsLoader
+import com.romanwuattier.loader.ConverterType
 
 class SplashScreenActivity : AppCompatActivity() {
 

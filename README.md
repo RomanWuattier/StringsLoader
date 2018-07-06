@@ -33,8 +33,8 @@ StringsLoader return an empty string.
 val str = StringsLoader.get("key.1")
 ```
 
-Note that StringsLoader is a singleton. A single instance of the cache is created. To clear the cache a
-`clear` function is provided.
+Note that StringsLoader provides static methods to interact with the Loader module. A singleton instance of the Loader 
+module is created. A single instance of the cache is created. To clear the cache a`clear` function is provided.
 
 ## Improvements
 * Centralize error management

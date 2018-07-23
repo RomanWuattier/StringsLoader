@@ -19,20 +19,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private val tvKey1 by lazy { findViewById<TextView>(R.id.key1) }
-    private val tvKey2 by lazy { findViewById<TextView>(R.id.key2) }
-    private val tvKey3 by lazy { findViewById<TextView>(R.id.key3) }
-    private val getKeys by lazy { findViewById<Button>(R.id.getKeys) }
-    private val clearKeys by lazy { findViewById<Button>(R.id.clearKeys) }
-    private val loadLocal by lazy { findViewById<Button>(R.id.loadLocal) }
+    private val tvKey1 by lazy(LazyThreadSafetyMode.NONE) { findViewById<TextView>(R.id.key1) }
+    private val tvKey2 by lazy(LazyThreadSafetyMode.NONE) { findViewById<TextView>(R.id.key2) }
+    private val tvKey3 by lazy(LazyThreadSafetyMode.NONE) { findViewById<TextView>(R.id.key3) }
+    private val tvComposedKey1 by lazy(LazyThreadSafetyMode.NONE) { findViewById<TextView>(R.id.composed_key1) }
+    private val tvComposedKey2 by lazy(LazyThreadSafetyMode.NONE) { findViewById<TextView>(R.id.composed_key2) }
+    private val getKeys by lazy(LazyThreadSafetyMode.NONE) { findViewById<Button>(R.id.getKeys) }
+    private val clearKeys by lazy(LazyThreadSafetyMode.NONE) { findViewById<Button>(R.id.clearKeys) }
+    private val loadLocal by lazy(LazyThreadSafetyMode.NONE) { findViewById<Button>(R.id.loadLocal) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        getKeys.setOnClickListener({ setKeys() })
-        clearKeys.setOnClickListener({ clearKeys() })
-        loadLocal.setOnClickListener({ loadFromLocal() })
+        getKeys.setOnClickListener { setKeys() }
+        clearKeys.setOnClickListener { clearKeys() }
+        loadLocal.setOnClickListener { loadFromLocal() }
     }
 
     private fun setKeys() {
@@ -44,6 +46,12 @@ class MainActivity : AppCompatActivity() {
 
         val string1 = StringsLoader.get("key.1")
         tvKey1.text = string1
+
+        val composedString1 = StringsLoader.get("composed.key.1", 100)
+        tvComposedKey1.text = composedString1
+
+        val composedString2 = StringsLoader.get("composed.key.2", 2, "local composed string")
+        tvComposedKey2.text = composedString2
     }
 
     private fun clearKeys() {

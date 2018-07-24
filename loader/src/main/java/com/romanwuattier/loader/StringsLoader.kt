@@ -41,7 +41,6 @@ class StringsLoader {
          */
         fun loadFromRemote(url: String, cacheDir: File, converterType: ConverterType, callback: LoaderCallback) {
             checkMainThread()
-
             loader.loadFromRemote<Any, String>(url, cacheDir, converterType, callback)
         }
 
@@ -71,7 +70,6 @@ class StringsLoader {
          */
         fun loadFromLocal(path: String, context: Context, converterType: ConverterType, callback: LoaderCallback) {
             checkMainThread()
-
             loader.loadFromLocal<Any, String>(path, context, converterType, callback)
         }
 
@@ -87,11 +85,20 @@ class StringsLoader {
          *
          * @return An empty [String] when the store doesn't contain the key, the [String] value otherwise
          */
-        fun get(key: Any): String {
-            checkMainThread()
+        fun get(key: Any): String = loader.get<Any, String>(key) ?: ""
 
-            return loader.get<Any, String>(key) ?: ""
-        }
+        /**
+         * Find the given [key] in the store and returns a string obtained by substituting the specified arguments
+         * [args], using the default locale.
+         * When the [key] is not found, an empty [String] is returned.
+         *
+         * @throws java.util.IllegalFormatException If a format string contains an illegal syntax, a format specifier
+         * that is incompatible with the given arguments, insufficient arguments given the format string, or other
+         * illegal conditions.
+         *
+         * @see get
+         */
+        fun get(key: Any, vararg args: Any): String = get(key).format(*args)
 
         /**
          * Clear the store.
@@ -104,7 +111,6 @@ class StringsLoader {
          */
         fun clear(): Boolean {
             checkMainThread()
-
             return loader.clear<Any, String>()
         }
 
@@ -120,6 +126,7 @@ class StringsLoader {
          * @param key The key associated to the [String] value
          */
         fun displayTextInView(view: AppCompatTextView, key: Any) {
+            checkMainThread()
             view.text = get(key)
         }
 
@@ -135,6 +142,7 @@ class StringsLoader {
          * @param key The key associated to the [String] value
          */
         fun displayTextInView(view: AppCompatButton, key: Any) {
+            checkMainThread()
             view.text = get(key)
         }
 
@@ -150,6 +158,7 @@ class StringsLoader {
          * @param key The key associated to the [String] value
          */
         fun displayHintInView(view: AppCompatTextView, key: Any) {
+            checkMainThread()
             view.hint = get(key)
         }
 
@@ -165,6 +174,7 @@ class StringsLoader {
          * @param key The key associated to the [String] value
          */
         fun displayHintInView(view: AppCompatButton, key: Any) {
+            checkMainThread()
             view.hint = get(key)
         }
     }

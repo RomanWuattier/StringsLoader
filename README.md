@@ -31,6 +31,12 @@ When the download has successfuly completed, you can get string data from any ty
 StringsLoader return an empty string.
 ```kotlin
 val str = StringsLoader.get("key.1")
+// str = "This is the first string"
+```
+Also, you can substitute specified arguments using the default locale.
+```kotlin
+val str = StringsLoader.get("key.2", "StringsLoader", 1, "-beta")
+// str = StringLoad available version is 1 -beta
 ```
 
 Note that StringsLoader provides static methods to interact with the Loader module. A singleton instance of the Loader 

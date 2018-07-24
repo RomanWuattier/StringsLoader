@@ -1,5 +1,8 @@
 {
   "key.1": "This is the first local string",
   "key.2": "This is the second local string",
-  "key.3": "This is the third local string"
+  "key.3": "This is the third local string",
+
+  "composed.key.1": "This is the first local composed string %d",
+  "composed.key.2": "This is the %d %s"
 }

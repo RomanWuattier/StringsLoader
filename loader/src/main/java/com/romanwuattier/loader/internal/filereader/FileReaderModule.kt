@@ -22,7 +22,7 @@ internal class FileReaderModule private constructor() {
         }
     }
 
-    private val converterFactory = ConverterFactory()
+    private val converterFactory by lazy { ConverterFactory() }
 
     @Synchronized
     internal fun getConverterStrategy(type: ConverterType): ConverterStrategy = converterFactory.getConverter(type)

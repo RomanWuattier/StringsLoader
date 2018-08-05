@@ -58,6 +58,8 @@ class MainActivity : AppCompatActivity() {
         tvKey1.text = ""
         tvKey2.text = ""
         tvKey3.text = ""
+        tvComposedKey1.text = ""
+        tvComposedKey2.text = ""
     }
 
     private fun loadFromLocal() {

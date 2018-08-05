@@ -10,9 +10,9 @@ import java.util.concurrent.*
 
 internal class LocalStore<K, V> : Store.Local<K, V> {
 
-    private val worker: ExecutorService = Executors.newSingleThreadExecutor()
+    private val worker: ExecutorService by lazy { Executors.newSingleThreadExecutor() }
 
-    private val module = FileReaderModule.provideInstance()
+    private val module: FileReaderModule by lazy { FileReaderModule.provideInstance() }
 
     override fun fetch(loadRequest: Request, callback: LoaderCallback) {
         val localRequest: LocalRequest = loadRequest as LocalRequest

@@ -10,9 +10,9 @@ import java.util.concurrent.*
 
 internal class RemoteStore<K, V> : Store.Remote<K, V> {
 
-    private val worker: ExecutorService = Executors.newSingleThreadExecutor()
+    private val worker: ExecutorService by lazy { Executors.newSingleThreadExecutor() }
 
-    private val module = DownloaderModule.provideInstance()
+    private val module: DownloaderModule by lazy { DownloaderModule.provideInstance() }
 
     override fun fetch(loadRequest: Request, callback: LoaderCallback) {
         val remoteRequest: RemoteRequest = loadRequest as RemoteRequest

@@ -4,6 +4,9 @@ import android.content.Context
 import com.romanwuattier.loader.ConverterType
 import java.io.File
 
+/**
+ * Marker interface defining a [RemoteRequest], a [LocalRequest]
+ */
 internal interface Request
 
 /**

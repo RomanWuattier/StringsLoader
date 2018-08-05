@@ -25,7 +25,7 @@ internal class AnyLoader private constructor() : Loader {
         }
     }
 
-    private val module = LoaderModule.provideInstance()
+    private val module: LoaderModule by lazy { LoaderModule.provideInstance() }
 
     @Synchronized
     override fun <K, V> loadFromRemote(url: String, cacheDir: File, converterType: ConverterType,

@@ -23,11 +23,11 @@ internal class StoreModule<K, V> private constructor() {
         }
     }
 
-    private val memoryStore: Store.Memory<K, V> = MemoryStore()
+    private val memoryStore: Store.Memory<K, V> by lazy { MemoryStore<K, V>() }
 
-    private val remoteStore: Store.Remote<K, V> = RemoteStore()
+    private val remoteStore: Store.Remote<K, V> by lazy { RemoteStore<K, V>() }
 
-    private val localStore: Store.Local<K, V> = LocalStore()
+    private val localStore: Store.Local<K, V> by lazy { LocalStore<K, V>() }
 
     @Synchronized
     internal fun getMemoryStore(): Store.Memory<K, V> = memoryStore

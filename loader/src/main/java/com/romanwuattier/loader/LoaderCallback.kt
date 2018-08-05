@@ -1,7 +1,7 @@
 package com.romanwuattier.loader
 
 /**
- * Callback called to notify that the loading job is completed.
+ * Callback called to notify that the asynchronous loading job has completed.
  */
 interface LoaderCallback {
 

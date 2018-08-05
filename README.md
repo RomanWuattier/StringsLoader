@@ -43,10 +43,10 @@ Note that StringsLoader provides static methods to interact with the Loader modu
 module is created. A single instance of the cache is created. To clear the cache a`clear` function is provided.
 
 ## Improvements
-* Centralize error management
-* Implement a retry strategy
+* Unit tests
+* Add a retry strategy
 * Allows a custom configuration to manage caching with OkHttp
 
 ## Note
-The `loader` module is generic. By creating another type of loader you can load any kind of data. See the
-`stringsloader` module.
+The internal `Loader` is generic. By creating another type of loader you can load any kind of data. See the
+`StringsLoader` class.

@@ -25,9 +25,9 @@ internal class DownloaderModule private constructor() {
         }
     }
 
-    private val provider = OkHttpProvider()
+    private val provider by lazy { OkHttpProvider() }
 
-    private val converterFactory = ConverterFactory()
+    private val converterFactory by lazy { ConverterFactory() }
 
     @Synchronized
     internal fun getOkHttpClient(defaultCacheDir: File): OkHttpClient = provider.buildOkHttpClient(defaultCacheDir)

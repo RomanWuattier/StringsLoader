@@ -1,5 +1,6 @@
 package com.romanwuattier.loader.internal.task
 
+import android.net.TrafficStats
 import com.romanwuattier.loader.internal.converter.ConverterStrategy
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -13,10 +14,13 @@ import java.util.concurrent.ConcurrentHashMap
 internal class DownloadTask<K, V>(private val okHttpClient: OkHttpClient, private val okHttpRequest: Request,
     private val converter: ConverterStrategy) : Callable<ConcurrentHashMap<K, V>> {
 
+    private val SOCKET_TAG = "strings-loader".hashCode()
+
     override fun call(): ConcurrentHashMap<K, V> {
         var response: Response? = null
 
         return try {
+            TrafficStats.setThreadStatsTag(SOCKET_TAG)
             response = okHttpClient.newCall(okHttpRequest).execute()
             converter.convert(reader = response?.body()?.charStream())
         } finally {

@@ -8,7 +8,7 @@ android {
     compileSdkVersion 27
 
     defaultConfig {
-        applicationId "com.romanwuattier.stringsloader"
+        applicationId "com.romanwuattier.loader"
         minSdkVersion 16
         targetSdkVersion 27
         versionCode 1

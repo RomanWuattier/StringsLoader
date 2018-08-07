@@ -1,1 +1,1 @@
-include ':app', ':stringsloader', ':loader'
+include ':app', ':loader'

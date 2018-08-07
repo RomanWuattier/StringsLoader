@@ -55,5 +55,12 @@
         android:layout_height="wrap_content"
         android:text="Load from local"
         />
+
+    <Button
+        android:id="@+id/loadRemote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Load from remote"
+        />
     
 </LinearLayout>

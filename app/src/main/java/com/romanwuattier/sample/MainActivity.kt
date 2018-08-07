@@ -19,6 +19,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private val URL = "https://api.myjson.com/bins/nqkqb"
+    private val CACHE_DIR by lazy { applicationContext.cacheDir }
+
     private val tvKey1 by lazy(LazyThreadSafetyMode.NONE) { findViewById<TextView>(R.id.key1) }
     private val tvKey2 by lazy(LazyThreadSafetyMode.NONE) { findViewById<TextView>(R.id.key2) }
     private val tvKey3 by lazy(LazyThreadSafetyMode.NONE) { findViewById<TextView>(R.id.key3) }
@@ -27,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private val getKeys by lazy(LazyThreadSafetyMode.NONE) { findViewById<Button>(R.id.getKeys) }
     private val clearKeys by lazy(LazyThreadSafetyMode.NONE) { findViewById<Button>(R.id.clearKeys) }
     private val loadLocal by lazy(LazyThreadSafetyMode.NONE) { findViewById<Button>(R.id.loadLocal) }
+    private val loadRemote by lazy(LazyThreadSafetyMode.NONE) { findViewById<Button>(R.id.loadRemote) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         getKeys.setOnClickListener { setKeys() }
         clearKeys.setOnClickListener { clearKeys() }
         loadLocal.setOnClickListener { loadFromLocal() }
+        loadRemote.setOnClickListener { loadFromRemote() }
     }
 
     private fun setKeys() {
@@ -64,6 +69,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadFromLocal() {
         StringsLoader.loadFromLocal("strings.json", this, ConverterType.JSON, object : LoaderCallback {
+            override fun onComplete() {
+                setKeys()
+            }
+
+            override fun onError(throwable: Throwable) {
+                // An exception occurred
+            }
+        })
+    }
+
+    private fun loadFromRemote() {
+        StringsLoader.loadFromRemote(URL, CACHE_DIR, ConverterType.JSON, object : LoaderCallback {
             override fun onComplete() {
                 setKeys()
             }
